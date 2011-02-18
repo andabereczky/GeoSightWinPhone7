@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010 Express for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSight", "GeoSight\GeoSight.csproj", "{C3CB721C-5FB8-484E-B42E-A490D51F17BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoSight.Tests", "GeoSight.Tests\GeoSight.Tests.csproj", "{6D4CDF6B-2D49-4288-840A-0C13027DAC02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{C3CB721C-5FB8-484E-B42E-A490D51F17BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3CB721C-5FB8-484E-B42E-A490D51F17BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3CB721C-5FB8-484E-B42E-A490D51F17BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4CDF6B-2D49-4288-840A-0C13027DAC02}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
