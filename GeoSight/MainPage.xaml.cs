@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows;
@@ -12,21 +14,28 @@ namespace GeoSight
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // The camera used to capture a picture.
+        /// <summary>
+        /// The client used to send HTTP requests.
+        /// </summary>
+        WebClient webClient;
+
+        /// <summary>
+        /// The camera used to capture a picture.
+        /// </summary>
         CameraCaptureTask ctask;
 
-        // Constructor
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MainPage()
         {
             InitializeComponent();
-
+            webClient = new WebClient();
             ctask = new CameraCaptureTask();
-
-            // Create new event handler for capturing a photo.
             ctask.Completed += new EventHandler<PhotoResult>(ctask_Completed);
         }
 
-        private void takePhotoButton_Click(object sender, RoutedEventArgs e)
+        private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
         {
             ctask.Show();
         }
@@ -47,11 +56,11 @@ namespace GeoSight
                 App.CapturedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
 
                 //Populate image control with WriteableBitmap object.
-                MainImage.Source = App.CapturedImage;
+                img_MainImage.Source = App.CapturedImage;
             }
         }
 
-        private void savePhotoButton_Click(object sender, RoutedEventArgs e)
+        private void SavePhotoButton_Click(object sender, RoutedEventArgs e)
         {
             Stream stream;
             bool useFile = true;
@@ -92,12 +101,82 @@ namespace GeoSight
             stream.Close();
         }
 
-        public static byte[] ToByteArray(WriteableBitmap bmp) {
+        private static byte[] ToByteArray(WriteableBitmap bmp) {
             int[] p = bmp.Pixels;
             int len = p.Length * 4;
             byte[] result = new byte[len];
             Buffer.BlockCopy(p, 0, result, 0, len);
             return result;
+        }
+
+        private void processLoginRequest(Stream responseStream)
+        {
+            StreamReader reader = new StreamReader(responseStream);
+            Debug.WriteLine(reader.ReadToEnd());
+            reader.Close();
+
+            //DataContractJsonSerializer serializer =
+            //    new DataContractJsonSerializer(typeof(LoginInfo));
+            //LoginInfo loginInfo = (LoginInfo)serializer.ReadObject(responseStream);
+        }
+
+        private void failLoginRequest(String message)
+        {
+            Debug.WriteLine("Login failed with the following message:");
+            Debug.WriteLine(message);
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<String, String> vars = new Dictionary<String, String>();
+            vars.Add("email", "anda@mail.com");
+            vars.Add("password", "1234");
+
+            EventDelegates.HTTPResponseDelegate responseDelegate =
+                new EventDelegates.HTTPResponseDelegate(processLoginRequest);
+            EventDelegates.HTTPFailDelegate failDelegate =
+                new EventDelegates.HTTPFailDelegate(failLoginRequest);
+
+            webClient.SendReqest(
+                true,
+                App.serverURL + App.loginURL,
+                vars,
+                responseDelegate,
+                failDelegate);
+        }
+
+        private void processSightsListRequest(Stream responseStream)
+        {
+            StreamReader reader = new StreamReader(responseStream);
+            Debug.WriteLine(reader.ReadToEnd());
+            reader.Close();
+
+            //DataContractJsonSerializer serializer =
+            //    new DataContractJsonSerializer(typeof(Sights));
+            //Sights sights = (Sights)serializer.ReadObject(responseStream);
+        }
+
+        private void failSightsListRequest(String message)
+        {
+            Debug.WriteLine("Retrieving the sights list failed with the following message:");
+            Debug.WriteLine(message);
+        }
+
+        private void PickASightButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<String, String> vars = new Dictionary<String, String>();
+
+            EventDelegates.HTTPResponseDelegate responseDelegate =
+                new EventDelegates.HTTPResponseDelegate(processSightsListRequest);
+            EventDelegates.HTTPFailDelegate failDelegate =
+                new EventDelegates.HTTPFailDelegate(failSightsListRequest);
+
+            webClient.SendReqest(
+                false,
+                App.serverURL + App.sightsListURL,
+                vars,
+                responseDelegate,
+                failDelegate);
         }
     }
 }
