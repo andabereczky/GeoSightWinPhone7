@@ -9,6 +9,9 @@ using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Collections;
 
 namespace GeoSight
 {
@@ -83,7 +86,7 @@ namespace GeoSight
                 WriteableBitmap wb = App.CapturedImage;
 
                 // Encode WriteableBitmap object to a JPEG stream.
-                Extensions.SaveJpeg(wb, myFileStream, wb.PixelWidth, wb.PixelHeight, 0, 85);
+                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, myFileStream, wb.PixelWidth, wb.PixelHeight, 0, 85);
                 myFileStream.Close();
 
                 // Create a new stream from isolated storage.
@@ -112,12 +115,14 @@ namespace GeoSight
         private void processLoginRequest(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
-            Debug.WriteLine(reader.ReadToEnd());
+            JObject array = JObject.Parse(reader.ReadToEnd());
             reader.Close();
 
-            //DataContractJsonSerializer serializer =
-            //    new DataContractJsonSerializer(typeof(LoginInfo));
-            //LoginInfo loginInfo = (LoginInfo)serializer.ReadObject(responseStream);
+            IEnumerator enum1 = array.GetEnumerator();
+            while(enum1.MoveNext())
+            {
+                Debug.WriteLine(enum1.Current.ToString());
+            }
         }
 
         private void failLoginRequest(String message)
@@ -148,12 +153,21 @@ namespace GeoSight
         private void processSightsListRequest(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
-            Debug.WriteLine(reader.ReadToEnd());
+            JArray array = JArray.Parse(reader.ReadToEnd());
             reader.Close();
 
-            //DataContractJsonSerializer serializer =
-            //    new DataContractJsonSerializer(typeof(Sights));
-            //Sights sights = (Sights)serializer.ReadObject(responseStream);
+            for (int i = 0; i <= array.Count - 1; i++)
+            {
+                Debug.WriteLine(array[i]["sight"]["name"]);
+                Debug.WriteLine(array[i]["sight"]["radius"]);
+                Debug.WriteLine(array[i]["sight"]["created_at"]);
+                Debug.WriteLine(array[i]["sight"]["latitude"]);
+                Debug.WriteLine(array[i]["sight"]["updated_at"]);
+                Debug.WriteLine(array[i]["sight"]["id"]);
+                Debug.WriteLine(array[i]["sight"]["user_id"]);
+                Debug.WriteLine(array[i]["sight"]["longitude"]);
+
+            }
         }
 
         private void failSightsListRequest(String message)
