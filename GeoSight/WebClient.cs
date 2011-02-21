@@ -68,7 +68,8 @@ namespace GeoSight
                 builder.Append("=");
                 builder.Append(entry.Value);
             }
-            String varString = builder.ToString();
+            String varString = Uri.EscapeUriString(builder.ToString());
+            varString = varString.Replace("@", "%40"); // HACK
 
             // Create the full correct URI.
             builder = new StringBuilder();
@@ -81,8 +82,11 @@ namespace GeoSight
             {
                 builder.Append(protocol);
                 builder.Append(url);
-                builder.Append("?");
-                builder.Append(varString);
+                if (varString != String.Empty)
+                {
+                    builder.Append("?");
+                    builder.Append(varString);
+                }
             }
             String uri = builder.ToString();
 
@@ -135,7 +139,7 @@ namespace GeoSight
                 HttpWebRequest request = requestState.Request;
                 Stream stream = request.EndGetRequestStream(asynchronousResult);
                 StreamWriter writer = new StreamWriter(stream);
-                writer.WriteLine(requestState.Vars);
+                writer.Write(requestState.Vars);
                 writer.Flush();
                 writer.Close();
                 request.BeginGetResponse(new AsyncCallback(ReadResponse), requestState);

@@ -129,8 +129,8 @@ namespace GeoSight
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             Dictionary<String, String> vars = new Dictionary<String, String>();
-            vars.Add("email", "anda@mail.com");
-            vars.Add("password", "1234");
+            vars.Add("user_session[email]", "anda@mail.com");
+            vars.Add("user_session[password]", "1234");
 
             EventDelegates.HTTPResponseDelegate responseDelegate =
                 new EventDelegates.HTTPResponseDelegate(processLoginRequest);
