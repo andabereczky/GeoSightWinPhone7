@@ -29,10 +29,11 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Button Content="Login" HorizontalAlignment="Left" Margin="6,0,0,0" Name="btn_LoginButton" VerticalAlignment="Top" Click="LoginButton_Click" />
+            <TextBlock HorizontalAlignment="Right" Margin="6,0,0,0" Name="LoginMessageTextBlock" Text="Not logged in." VerticalAlignment="Top" TextAlignment="Right" />
             <Button Content="Pick a Sight" HorizontalAlignment="Left" Margin="6,75,0,0" Name="btn_PickASightButton" VerticalAlignment="Top" Click="PickASightButton_Click" />
             <Button Content="Take a photo" HorizontalAlignment="Left" Margin="6,145,0,0" Name="btn_TakePhotoButton" VerticalAlignment="Top" Click="TakePhotoButton_Click" />
-            <Image HorizontalAlignment="Left" Margin="0,223,0,0" Name="img_MainImage" Stretch="Fill" VerticalAlignment="Top" Width="400" Height="300" />
-            <Button Content="Save the photo" HorizontalAlignment="Left" Margin="0,529,0,0" Name="btn_SavePhotoButton" VerticalAlignment="Top" Click="SavePhotoButton_Click" />
+            <Image HorizontalAlignment="Left" Margin="6,223,0,0" Name="img_MainImage" Stretch="Fill" VerticalAlignment="Top" Width="400" Height="300" />
+            <Button Content="Save the photo" HorizontalAlignment="Left" Margin="6,529,0,0" Name="btn_SavePhotoButton" VerticalAlignment="Top" Click="SavePhotoButton_Click" />
         </Grid>
     </Grid>
  

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Windows.Navigation;
 
 namespace GeoSight
 {
@@ -36,6 +37,18 @@ namespace GeoSight
             webClient = new WebClient();
             ctask = new CameraCaptureTask();
             ctask.Completed += new EventHandler<PhotoResult>(ctask_Completed);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (App.LoggedIn)
+            {
+                LoginMessageTextBlock.Text = "Logged in.";
+            }
+            else
+            {
+                LoginMessageTextBlock.Text = "Not logged in.";
+            }
         }
 
         private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
@@ -112,42 +125,9 @@ namespace GeoSight
             return result;
         }
 
-        private void processLoginRequest(Stream responseStream)
-        {
-            StreamReader reader = new StreamReader(responseStream);
-            JObject array = JObject.Parse(reader.ReadToEnd());
-            reader.Close();
-
-            IEnumerator enum1 = array.GetEnumerator();
-            while(enum1.MoveNext())
-            {
-                Debug.WriteLine(enum1.Current.ToString());
-            }
-        }
-
-        private void failLoginRequest(String message)
-        {
-            Debug.WriteLine("Login failed with the following message:");
-            Debug.WriteLine(message);
-        }
-
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<String, String> vars = new Dictionary<String, String>();
-            vars.Add("user_session[email]", "anda@mail.com");
-            vars.Add("user_session[password]", "1234");
-
-            EventDelegates.HTTPResponseDelegate responseDelegate =
-                new EventDelegates.HTTPResponseDelegate(processLoginRequest);
-            EventDelegates.HTTPFailDelegate failDelegate =
-                new EventDelegates.HTTPFailDelegate(failLoginRequest);
-
-            webClient.SendReqest(
-                true,
-                App.serverURL + App.loginURL,
-                vars,
-                responseDelegate,
-                failDelegate);
+            this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
         }
 
         private void processSightsListRequest(Stream responseStream)

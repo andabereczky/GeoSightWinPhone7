@@ -20,6 +20,7 @@ namespace GeoSight
         public static String loginURL = "/login.json";
         public static String sightsListURL = "/sights.json";
         public static WriteableBitmap CapturedImage;
+        public static Boolean LoggedIn = false;
 
         /// <summary>
         /// Constructor for the Application object.
