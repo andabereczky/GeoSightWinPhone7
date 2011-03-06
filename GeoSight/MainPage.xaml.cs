@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Windows.Navigation;
 
 namespace GeoSight
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        /// <summary>
-        /// The client used to send HTTP requests.
-        /// </summary>
-        WebClient webClient;
-
         /// <summary>
         /// The camera used to capture a picture.
         /// </summary>
@@ -34,13 +24,13 @@ namespace GeoSight
         public MainPage()
         {
             InitializeComponent();
-            webClient = new WebClient();
             ctask = new CameraCaptureTask();
             ctask.Completed += new EventHandler<PhotoResult>(ctask_Completed);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // Check if we're logged in.
             if (App.LoggedIn)
             {
                 LoginMessageTextBlock.Text = "Logged in.";
@@ -48,6 +38,16 @@ namespace GeoSight
             else
             {
                 LoginMessageTextBlock.Text = "Not logged in.";
+            }
+
+            // Check if a sight has been selected.
+            if (App.SelectedSight != null)
+            {
+                PickSightMessageTextBlock.Text = "Selected " + App.SelectedSight.Name;
+            }
+            else
+            {
+                PickSightMessageTextBlock.Text = "No sight selected.";
             }
         }
 
@@ -130,47 +130,9 @@ namespace GeoSight
             this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
         }
 
-        private void processSightsListRequest(Stream responseStream)
-        {
-            StreamReader reader = new StreamReader(responseStream);
-            JArray array = JArray.Parse(reader.ReadToEnd());
-            reader.Close();
-
-            for (int i = 0; i <= array.Count - 1; i++)
-            {
-                Debug.WriteLine(array[i]["sight"]["name"]);
-                Debug.WriteLine(array[i]["sight"]["radius"]);
-                Debug.WriteLine(array[i]["sight"]["created_at"]);
-                Debug.WriteLine(array[i]["sight"]["latitude"]);
-                Debug.WriteLine(array[i]["sight"]["updated_at"]);
-                Debug.WriteLine(array[i]["sight"]["id"]);
-                Debug.WriteLine(array[i]["sight"]["user_id"]);
-                Debug.WriteLine(array[i]["sight"]["longitude"]);
-
-            }
-        }
-
-        private void failSightsListRequest(String message)
-        {
-            Debug.WriteLine("Retrieving the sights list failed with the following message:");
-            Debug.WriteLine(message);
-        }
-
         private void PickASightButton_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<String, String> vars = new Dictionary<String, String>();
-
-            EventDelegates.HTTPResponseDelegate responseDelegate =
-                new EventDelegates.HTTPResponseDelegate(processSightsListRequest);
-            EventDelegates.HTTPFailDelegate failDelegate =
-                new EventDelegates.HTTPFailDelegate(failSightsListRequest);
-
-            webClient.SendReqest(
-                false,
-                App.serverURL + App.sightsListURL,
-                vars,
-                responseDelegate,
-                failDelegate);
+            this.NavigationService.Navigate(new Uri("/PickSight.xaml", UriKind.Relative));
         }
     }
 }

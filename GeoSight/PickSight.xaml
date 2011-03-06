@@ -27,7 +27,24 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock HorizontalAlignment="Left" Margin="6,6,0,0" Name="NotificationTextBlock" Text="Please wait..." VerticalAlignment="Top" Foreground="Red" />
+            <ListBox Height="607" HorizontalAlignment="Left" Margin="6,39,0,0" Name="SightsList" VerticalAlignment="Top" Width="474" SelectionChanged="SightsList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel x:Name="stackPanelSightsList" Orientation="Vertical" >
+                            <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="40" Text="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Lat =" Foreground="LightBlue"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Latitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Long =" Foreground="LightBlue"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Longitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

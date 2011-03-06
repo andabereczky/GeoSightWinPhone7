@@ -23,6 +23,7 @@ namespace GeoSight
         public static WriteableBitmap CapturedImage;
         public static CookieContainer Cookies = new CookieContainer();
         public static Boolean LoggedIn = false;
+        public static Sight SelectedSight = null;
 
         /// <summary>
         /// Constructor for the Application object.
