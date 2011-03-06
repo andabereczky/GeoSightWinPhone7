@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -20,6 +21,7 @@ namespace GeoSight
         public static String loginURL = "/login.json";
         public static String sightsListURL = "/sights.json";
         public static WriteableBitmap CapturedImage;
+        public static CookieContainer Cookies = new CookieContainer();
         public static Boolean LoggedIn = false;
 
         /// <summary>

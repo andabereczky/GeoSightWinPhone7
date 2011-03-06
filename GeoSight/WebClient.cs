@@ -94,6 +94,7 @@ namespace GeoSight
             {
                 // Create and initialize an HTTP request to the desired URI.
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(uri));
+                request.CookieContainer = App.Cookies;
                 if (isPOST)
                 {
                     request.Method = "POST";
