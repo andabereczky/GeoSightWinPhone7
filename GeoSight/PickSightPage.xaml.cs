@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 
 namespace GeoSight
 {
-    public partial class PickSight : PhoneApplicationPage
+    public partial class PickSightPage : PhoneApplicationPage
     {
         /// <summary>
         /// The client used to send HTTP requests.
@@ -32,7 +32,7 @@ namespace GeoSight
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PickSight()
+        public PickSightPage()
         {
             // Initialize the page
             InitializeComponent();
