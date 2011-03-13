@@ -23,6 +23,7 @@ namespace GeoSight
 
         // Global variables used throughout the application.
         // "The road to programming hell is paved with global variables."
+        public static WebClient WebClient = new WebClient();
         public static WriteableBitmap CapturedImage = null;
         public static CookieContainer Cookies = new CookieContainer();
         public static Boolean LoggedIn = false;

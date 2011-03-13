@@ -12,11 +12,6 @@ namespace GeoSight
     public partial class LoginPage : PhoneApplicationPage
     {
         /// <summary>
-        /// The client used to send HTTP requests.
-        /// </summary>
-        WebClient webClient;
-
-        /// <summary>
         /// A delegate used as a callback when an HTTP response is received.
         /// </summary>
         EventDelegates.HTTPResponseDelegate responseDelegate;
@@ -35,7 +30,6 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize members variables
-            webClient = new WebClient();
             responseDelegate = new EventDelegates.HTTPResponseDelegate(ProcessLoginRequest);
             failDelegate = new EventDelegates.HTTPFailDelegate(FailLoginRequest);
         }
@@ -124,7 +118,7 @@ namespace GeoSight
             vars.Add("user_session[email]", emailAddress);
             vars.Add("user_session[password]", password);
 
-            webClient.SendReqest(
+            App.WebClient.SendReqest(
                 true,
                 App.serverURL + App.loginURL,
                 vars,

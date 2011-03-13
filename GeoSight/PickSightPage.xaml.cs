@@ -15,11 +15,6 @@ namespace GeoSight
     public partial class PickSightPage : PhoneApplicationPage
     {
         /// <summary>
-        /// The client used to send HTTP requests.
-        /// </summary>
-        WebClient webClient;
-
-        /// <summary>
         /// A delegate used as a callback when an HTTP response is received.
         /// </summary>
         EventDelegates.HTTPResponseDelegate responseDelegate;
@@ -38,7 +33,6 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize members variables
-            webClient = new WebClient();
             responseDelegate = new EventDelegates.HTTPResponseDelegate(ProcessSightsListRequest);
             failDelegate = new EventDelegates.HTTPFailDelegate(FailSightsListRequest);
         }
@@ -85,7 +79,7 @@ namespace GeoSight
         /// </summary>
         private void GetSightsList()
         {
-            webClient.SendReqest(
+            App.WebClient.SendReqest(
                 false,
                 App.serverURL + App.sightsListURL,
                 new Dictionary<String, String>(),
