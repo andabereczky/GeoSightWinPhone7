@@ -9,6 +9,9 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Phone.Controls.Maps;
+using System.Device.Location;
+using System.Windows.Input;
 
 
 namespace GeoSight
@@ -71,6 +74,8 @@ namespace GeoSight
                 failDelegate);
         }
 
+        Sights sights;
+
         /// <summary>
         /// Called when the HTTP message to the server requesting the list of
         /// sights was successful.
@@ -85,10 +90,43 @@ namespace GeoSight
                 // Try to parse the HTTP response as a JSON object
                 JArray jsonSights = JArray.Parse(reader.ReadToEnd());
 
-                // Created a collection of sights sorted by the distance to the current location
-                Sights sights = new Sights(jsonSights);
+                // Created a collection of sights 
+                sights = new Sights(jsonSights);
 
-                // TODO: show the sights on the map
+
+                Deployment.Current.Dispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        //for each sight, place a pin on the map
+                        foreach (Sight sight in sights)
+                        {
+                           
+                            var pin = new Pushpin();
+                            pin.Location = new GeoCoordinate(sight.Latitude, sight.Longitude);
+                            pin.Content = sight.Name;
+                            sightsMap.Children.Add(pin);
+
+                            //add a handler for when pin is clicked, select that sight
+                            pin.AddHandler(Pushpin.MouseLeftButtonUpEvent, new MouseButtonEventHandler(PinClick), true);
+                            
+                            NotificationTextBlock.Text = "";
+
+                        }
+                    })
+                );
+                
+
+                //show the map and buttons for map on the page
+                Deployment.Current.Dispatcher.BeginInvoke(
+                   new Action(() =>
+                   {
+                       sightsMap.Visibility = Visibility.Visible;
+                       btn_ZoomInButton.Visibility = Visibility.Visible;
+                       btn_ZoomOutButton.Visibility = Visibility.Visible;
+                       btn_ChangeToRoadViewButton.Visibility = Visibility.Visible;
+                       btn_ChangeToAerialViewButton.Visibility = Visibility.Visible;
+
+                   }));
             }
             catch (JsonReaderException e)
             {
@@ -102,8 +140,47 @@ namespace GeoSight
             finally
             {
                 reader.Close();
+
+                //change so that current location is on center?
+                NotificationTextBlock.Dispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        sightsMap.Center = new GeoCoordinate(40.115627, -88.220987);
+                        sightsMap.ZoomLevel = 8;
+                    })
+                );
+
             }
         }
+
+        //event handler for left button up on mouse for the pin
+        private void PinClick(object sender, MouseButtonEventArgs e)
+        {
+            Pushpin pin = (Pushpin)sender;
+
+            Sight selection = null;
+
+            //find the appropriate sight from the list of sights with the pin's coordinate
+            foreach (Sight sight in sights)
+            {
+                if (pin.Location.Latitude == sight.Latitude & pin.Location.Longitude == sight.Longitude)
+                {
+                    selection = sight;
+                }
+            }
+
+            //select that sight and go back to main page
+            Deployment.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    App.SelectedSight = selection;
+                    this.NavigationService.GoBack();
+
+                })
+            );
+        }
+
+
 
         /// <summary>
         /// Called when the HTTP message to the server requesting the list of
@@ -116,5 +193,39 @@ namespace GeoSight
             NotificationTextBlock.Dispatcher.BeginInvoke(
                 new Action(() => { NotificationTextBlock.Text = "Retrieving Sights Failed: " + message + "."; }));
         }
+
+        /// <summary>
+        /// Zoom in to the map on the center of the map element
+        /// </summary>
+        private void btn_ZoomInButton_Click(object sender, RoutedEventArgs e)
+        {
+            sightsMap.ZoomLevel = sightsMap.ZoomLevel + 1;
+        }
+
+        /// <summary>
+        /// Zoom out from the map on the center of the map element
+        /// </summary>
+        private void btn_ZoomOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            sightsMap.ZoomLevel = sightsMap.ZoomLevel - 1;
+        }
+
+        /// <summary>
+        /// Changes the map view to Road mode
+        /// </summary>
+        private void btn_ChangeToRoadViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            sightsMap.Mode = new RoadMode();
+        }
+
+
+        /// <summary>
+        /// Changes the map view to Aerial mode
+        /// </summary>
+        private void btn_ChangeToAerialViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            sightsMap.Mode = new AerialMode();
+        }
+
     }
 }

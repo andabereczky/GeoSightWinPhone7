@@ -145,5 +145,29 @@ namespace GeoSight
         {
             this.NavigationService.Navigate(new Uri("/PickSightPage.xaml", UriKind.Relative));
         }
+
+        private void btn_PickSightFromMap_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/PickSightMapPage.xaml", UriKind.Relative));
+        }
+
+        private void btn_ViewPictures_Click(object sender, RoutedEventArgs e)
+        {
+            PhotoChooserTask task = new PhotoChooserTask();
+            //           task.Completed += new EventHandler<PhotoResult>(showPictures);
+            task.Show();
+        }
+        /*
+                private void showPictures(object sender, PhotoResult e)
+                {
+
+                    BitmapImage image = new BitmapImage();
+
+                    if (e.ChosenPhoto != null)
+                    {
+                        image.SetSource(e.ChosenPhoto);
+                    }
+                }
+        */
     }
 }
