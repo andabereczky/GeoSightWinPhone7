@@ -8,6 +8,7 @@ using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
+using System.Device.Location;
 
 namespace GeoSight
 {
@@ -19,13 +20,23 @@ namespace GeoSight
         CameraCaptureTask ctask;
 
         /// <summary>
+        /// Supplies location data that is based on latitude and longitude.
+        /// </summary>
+        GPSLocation location;
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         public MainPage()
         {
             InitializeComponent();
+
+            // Initialize the camera task
             ctask = new CameraCaptureTask();
             ctask.Completed += new EventHandler<PhotoResult>(ctask_Completed);
+
+            // Initialize the GPS location
+            location = new GPSLocation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

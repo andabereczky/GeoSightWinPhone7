@@ -68,6 +68,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GPSLocation.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -75,6 +76,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventDelegates.cs" />
+    <Compile Include="PickSightMapPage.xaml.cs">
+      <DependentUpon>PickSightMapPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PickSightPage.xaml.cs">
       <DependentUpon>PickSightPage.xaml</DependentUpon>
     </Compile>
@@ -93,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PickSightMapPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

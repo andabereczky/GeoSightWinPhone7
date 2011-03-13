@@ -16,6 +16,12 @@ namespace GeoSight
         GeoCoordinateWatcher watcher;
 
         /// <summary>
+        /// True if the watcher was started successfully
+        /// i.e. it's listening for changes the GPS location.
+        /// </summary>
+        public bool Started { get; set; }
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         public GPSLocation()
@@ -23,8 +29,8 @@ namespace GeoSight
             this.watcher = new GeoCoordinateWatcher();
             this.watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
             this.watcher.StatusChanged += new EventHandler<GeoPositionStatusChangedEventArgs>(watcher_StatusChanged);
-            bool started = this.watcher.TryStart(false, TimeSpan.FromMilliseconds(2000));
-            if (!started)
+            this.Started = this.watcher.TryStart(false, TimeSpan.FromMilliseconds(2000));
+            if (!this.Started)
             {
                 Debug.WriteLine("GeoCoordinateWatcher timed out on start.");
             }

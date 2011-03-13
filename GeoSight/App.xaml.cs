@@ -16,14 +16,18 @@ namespace GeoSight
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        // Global variables used throughout the application.
+        // Constants used throughout the application.
         public static String serverURL = "geosight.heroku.com";
         public static String loginURL = "/login.json";
         public static String sightsListURL = "/sights.json";
-        public static WriteableBitmap CapturedImage;
+
+        // Global variables used throughout the application.
+        // "The road to programming hell is paved with global variables."
+        public static WriteableBitmap CapturedImage = null;
         public static CookieContainer Cookies = new CookieContainer();
         public static Boolean LoggedIn = false;
         public static Sight SelectedSight = null;
+        public static double CurrentLatitude, CurrentLongitude;
 
         /// <summary>
         /// Constructor for the Application object.
