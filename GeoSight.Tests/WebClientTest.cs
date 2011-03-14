@@ -13,8 +13,8 @@ namespace GeoSight.Tests
         public void TestSendRequest()
         {
             new WebClient().SendReqest(
-                true,
-                "http://www.google.com/",
+                false,
+                "www.google.com",
                 new Dictionary<String, String>(),
                 new EventDelegates.HTTPResponseDelegate(ProcessResponse),
                 new EventDelegates.HTTPFailDelegate(FailRequest));
