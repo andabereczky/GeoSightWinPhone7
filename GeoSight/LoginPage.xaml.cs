@@ -112,16 +112,10 @@ namespace GeoSight
             // Clear the error message text block
             NotificationTextBlock.Text = String.Empty;
 
-            // Build a dictionary which contains the email address and password.
-            // This dictionary will be used to create the POST variables.
-            Dictionary<String, String> vars = new Dictionary<String, String>();
-            vars.Add("user_session[email]", emailAddress);
-            vars.Add("user_session[password]", password);
-
-            App.WebClient.SendReqest(
-                true,
-                App.serverURL + App.loginURL,
-                vars,
+            // Send login request to server
+            App.ServerConnection.Login(
+                emailAddress,
+                password,
                 responseDelegate,
                 failDelegate);
         }

@@ -79,10 +79,7 @@ namespace GeoSight
         /// </summary>
         private void GetSightsList()
         {
-            App.WebClient.SendReqest(
-                false,
-                App.serverURL + App.sightsListURL,
-                new Dictionary<String, String>(),
+            App.ServerConnection.GetSightsList(
                 responseDelegate,
                 failDelegate);
         }

@@ -83,6 +83,7 @@
       <DependentUpon>PickSightPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerConnection.cs" />
     <Compile Include="Sight.cs" />
     <Compile Include="Sights.cs" />
     <Compile Include="WebClient.cs" />

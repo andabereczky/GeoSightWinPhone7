@@ -22,12 +22,21 @@ namespace GeoSight
     /// </summary>
     public class WebClient
     {
-        #region Private static member variables
+        #region Private member variables
 
         /// <summary>
-        /// The default protocol for an HTTP request.
+        /// The protocol for an HTTP request.
         /// </summary>
-        private static string protocol = "http://";
+        private String protocol;
+
+        #endregion
+
+        #region Constructor
+
+        public WebClient(String protocol)
+        {
+            this.protocol = protocol;
+        }
 
         #endregion
 
@@ -76,11 +85,13 @@ namespace GeoSight
             if (isPOST)
             {
                 builder.Append(protocol);
+                builder.Append("://");
                 builder.Append(url);
             }
             else
             {
                 builder.Append(protocol);
+                builder.Append("://");
                 builder.Append(url);
                 if (varString != String.Empty)
                 {

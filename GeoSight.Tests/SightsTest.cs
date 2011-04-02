@@ -36,7 +36,7 @@ namespace GeoSight.Tests
             // Check that the sights are sorted correctly
             ObservableCollection<Sight> sortedSights =
                 Sights.GetSortedSights(sights, 40.115627, -88.220987);
-            Assert.AreEqual(2, sortedSights.Count);
+            Assert.AreEqual(sights.Count, sortedSights.Count);
             Assert.AreEqual("\"Das Cafe\"", sortedSights[0].Name);
             Assert.AreEqual("\"well\"", sortedSights[1].Name);
         }
