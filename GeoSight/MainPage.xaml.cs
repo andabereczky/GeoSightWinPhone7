@@ -42,9 +42,9 @@ namespace GeoSight
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             // Check if we're logged in.
-            if (App.LoggedIn)
+            if (App.LoginFirstName != String.Empty)
             {
-                LoginMessageTextBlock.Text = "Logged in.";
+                LoginMessageTextBlock.Text = "Logged in as " + App.LoginFirstName;
             }
             else
             {
@@ -134,6 +134,11 @@ namespace GeoSight
             byte[] result = new byte[len];
             Buffer.BlockCopy(p, 0, result, 0, len);
             return result;
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/RegisterPage.xaml", UriKind.Relative));
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

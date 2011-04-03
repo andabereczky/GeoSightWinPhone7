@@ -21,6 +21,8 @@ namespace GeoSight
 
         private static String serverURL = "geosight.heroku.com";
 
+        private static String registerURL = "/users.json";
+
         private static String loginURL = "/user_sessions.json";
 
         private static String sightsListURL = "/sights.json";
@@ -88,6 +90,43 @@ namespace GeoSight
                 false,
                 serverURL + sightsListURL,
                 new Dictionary<String, String>(),
+                responseDelegate,
+                failDelegate);
+        }
+
+        /// <summary>
+        /// Send a message to the web server, requesting the register a new user.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="emailAddress"></param>
+        /// <param name="password"></param>
+        /// <param name="passwordConfirm"></param>
+        /// <param name="responseDelegate"></param>
+        /// <param name="failDelegate"></param>
+        public void Register(
+            string firstName,
+            string lastName,
+            string emailAddress,
+            string password,
+            string passwordConfirm,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            // Build a dictionary which contains the first name, last name,
+            // email address and password.
+            // This dictionary will be used to create the POST variables.
+            Dictionary<String, String> vars = new Dictionary<String, String>();
+            vars.Add("user[first_name]", firstName);
+            vars.Add("user[last_name]", lastName);
+            vars.Add("user[email]", emailAddress);
+            vars.Add("user[password]", password);
+            vars.Add("user[password_confirmation]", passwordConfirm);
+
+            this.webClient.SendReqest(
+                true,
+                serverURL + registerURL,
+                vars,
                 responseDelegate,
                 failDelegate);
         }

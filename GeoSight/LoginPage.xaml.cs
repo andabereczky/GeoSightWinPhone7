@@ -36,7 +36,7 @@ namespace GeoSight
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (App.LoggedIn)
+            if (App.LoginFirstName != String.Empty)
             {
                 NotificationTextBlock.Text = "Already logged in.";
             }
@@ -61,7 +61,11 @@ namespace GeoSight
 
                 // If the HTTP response parsed as JSON, we are logged in.
                 Deployment.Current.Dispatcher.BeginInvoke(
-                    new Action(() => { App.LoggedIn = true; this.NavigationService.GoBack(); }));
+                    new Action(() =>
+                    {
+                        App.LoginFirstName = loginInfo["record"]["user"]["first_name"].ToString();
+                        this.NavigationService.GoBack();
+                    }));
             }
             catch (JsonReaderException e)
             {

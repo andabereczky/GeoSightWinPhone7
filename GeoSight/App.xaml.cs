@@ -21,7 +21,7 @@ namespace GeoSight
         public static ServerConnection ServerConnection = new ServerConnection();
         public static WriteableBitmap CapturedImage = null;
         public static CookieContainer Cookies = new CookieContainer();
-        public static Boolean LoggedIn = false;
+        public static String LoginFirstName = String.Empty;
         public static Sight SelectedSight = null;
         public static double CurrentLatitude, CurrentLongitude;
 
