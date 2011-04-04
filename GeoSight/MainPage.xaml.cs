@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows;
@@ -8,7 +9,6 @@ using Microsoft.Phone;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
-using System.Device.Location;
 
 namespace GeoSight
 {
@@ -81,9 +81,6 @@ namespace GeoSight
 
                 //Take JPEG stream and decode into a WriteableBitmap object.
                 App.CapturedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
-
-                //Populate image control with WriteableBitmap object.
-                img_MainImage.Source = App.CapturedImage;
             }
         }
 
@@ -124,7 +121,7 @@ namespace GeoSight
 
             // Save the JPEG file to the media library on Windows Phone.
             MediaLibrary library = new MediaLibrary();
-            Picture pic = library.SavePicture("SavedPicture.jpg", stream);
+            Picture pic = library.SavePicture(App.ImageFilename, stream);
             stream.Close();
         }
 
@@ -162,6 +159,66 @@ namespace GeoSight
             //           task.Completed += new EventHandler<PhotoResult>(showPictures);
             task.Show();
         }
+
+        private void ProcessUploadRequest(Stream responseStream)
+        {
+            StreamReader reader = new StreamReader(responseStream);
+            string line;
+            Debug.WriteLine("Upload succeeded:\n");
+            while ((line = reader.ReadLine()) != null)
+            {
+                Debug.WriteLine(line);
+            }
+            reader.Close();
+        }
+
+        private void FailUploadRequest(String message)
+        {
+            Debug.WriteLine("Upload failed:\n" + message);
+        }
+
+        private void UploadPhotoButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Make sure the user is logged in.
+            if (App.LoginFirstName == String.Empty)
+            {
+                MessageBox.Show("Please log in.");
+                return;
+            }
+
+            // Find the photo in the media library.
+            MediaLibrary library = new MediaLibrary();
+            Picture picture = null;
+            foreach (Picture pic in library.Pictures)
+            {
+                if (pic.Name == App.ImageFilename)
+                {
+                    picture = pic;
+                    break;
+                }
+            }
+            if (picture == null)
+            {
+                MessageBox.Show("Please take and save a picture.");
+                return;
+            }
+
+            // Load the photo taken with the camera into memory.
+            Stream imageStream = picture.GetImage();
+            int imageSize = (int)imageStream.Length;
+            BinaryReader binReader = new BinaryReader(imageStream);
+            byte[] imageBytes = new byte[imageSize];
+            int count = binReader.Read(imageBytes, 0, (int)imageSize);
+            binReader.Close();
+
+            // Upload the image to the server.
+            App.ServerConnection.UploadPhoto(
+                (int) App.LoginUserID,
+                imageBytes,
+                new EventDelegates.HTTPResponseDelegate(ProcessUploadRequest),
+                new EventDelegates.HTTPFailDelegate(FailUploadRequest));
+        }
+
         /*
                 private void showPictures(object sender, PhotoResult e)
                 {

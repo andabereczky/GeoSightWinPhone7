@@ -64,6 +64,7 @@ namespace GeoSight
                     new Action(() =>
                     {
                         App.LoginFirstName = loginInfo["record"]["user"]["first_name"].ToString();
+                        App.LoginUserID = (UInt32) loginInfo["record"]["user"]["id"];
                         this.NavigationService.GoBack();
                     }));
             }

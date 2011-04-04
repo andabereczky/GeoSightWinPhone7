@@ -19,8 +19,10 @@ namespace GeoSight
         // Global variables used throughout the application.
         // "The road to programming hell is paved with global variables."
         public static ServerConnection ServerConnection = new ServerConnection();
+        public static String ImageFilename = "GeoSightPhoto.jpg";
         public static WriteableBitmap CapturedImage = null;
         public static CookieContainer Cookies = new CookieContainer();
+        public static UInt32 LoginUserID = 0;
         public static String LoginFirstName = String.Empty;
         public static Sight SelectedSight = null;
         public static double CurrentLatitude, CurrentLongitude;

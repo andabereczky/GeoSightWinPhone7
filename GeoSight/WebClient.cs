@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Diagnostics;
 
 namespace GeoSight
 {
@@ -11,7 +12,7 @@ namespace GeoSight
     /// </summary>
     public class RequestState
     {
-        public String Vars { get; set; }
+        public byte[] Body { get; set; }
         public HttpWebRequest Request { get; set; }
         public EventDelegates.HTTPResponseDelegate ResponseDelegate { get; set; }
         public EventDelegates.HTTPFailDelegate FailDelegate { get; set; }
@@ -40,7 +41,23 @@ namespace GeoSight
 
         #endregion
 
-        #region Send request function
+        #region Public static functions
+
+        public static byte[] StrToByteArray(string str)
+        {
+            System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            return encoding.GetBytes(str);
+        }
+
+        public static string ByteArrayToStr(byte[] bytes)
+        {
+            System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+            return enc.GetString(bytes, 0, bytes.Length);
+        }
+
+        #endregion
+
+        #region Public members functions
 
         /// <summary>
         /// Sends an HTTP request to the specified URL.
@@ -116,18 +133,146 @@ namespace GeoSight
                     request.Method = "GET";
                 }
 
+                // Create a binary byte array for the body.
+                byte[] body = StrToByteArray(varString);
+
                 // Create a request state.  
                 RequestState requestState = new RequestState();
-                requestState.Vars = varString;
+                requestState.Body = body;
                 requestState.Request = request;
                 requestState.ResponseDelegate = responseDelegate;
                 requestState.FailDelegate = failDelegate;
 
                 // Start the asynchronous request.
                 if (isPOST)
-                    request.BeginGetRequestStream(new AsyncCallback(WritePOSTVars), requestState);
+                    request.BeginGetRequestStream(new AsyncCallback(WriteBody), requestState);
                 else
                     request.BeginGetResponse(new AsyncCallback(ReadResponse), requestState);
+            }
+            catch (Exception e)
+            {
+                failDelegate(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Uploads a file using a POST request to the specified url.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="fileName"></param>
+        /// <param name="varName"></param>
+        /// <param name="fileContents"></param>
+        /// <param name="vars"></param>
+        /// <param name="responseDelegate"></param>
+        /// <param name="failDelegate"></param>
+        public void UploadFile(
+            string url,
+            string fileName,
+            string varName,
+            byte[] fileContents,
+            Dictionary<string, string> vars,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            // Local variables
+            StringBuilder builder;
+            String boundary = "------WyDcB6n100wunb48cOn5OeR82ysYaCrm";
+            String CRLF = "\r\n";
+            String twoDashes = "--";
+
+            // Create the body of the multi-part POST request.
+            builder = new StringBuilder();
+            builder.Append(twoDashes);
+            builder.Append(boundary);
+            builder.Append(CRLF);
+            foreach (KeyValuePair<string, string> entry in vars)
+            {
+                builder.Append("Content-Disposition: form-data; name=\"");
+                builder.Append(entry.Key);
+                builder.Append("\"");
+                builder.Append(CRLF);
+                builder.Append(CRLF);
+                builder.Append(entry.Value);
+                builder.Append(CRLF);
+                builder.Append(twoDashes);
+                builder.Append(boundary);
+                builder.Append(CRLF);
+            }
+            builder.Append("Content-Disposition: form-data; name=\"");
+            builder.Append(varName);
+            builder.Append("\"; filename=\"");
+            builder.Append(fileName);
+            builder.Append("\"");
+            builder.Append(CRLF);
+            builder.Append("Content-Type: image/jpeg");
+            builder.Append(CRLF);
+            builder.Append(CRLF);
+            byte[] body = new byte[builder.Length + fileContents.Length + CRLF.Length + twoDashes.Length + boundary.Length + twoDashes.Length + CRLF.Length];
+            Array.Copy(
+                StrToByteArray(builder.ToString()),
+                body,
+                builder.Length);
+            Array.Copy(
+                fileContents,
+                0,
+                body,
+                builder.Length,
+                fileContents.Length);
+            Array.Copy(
+                StrToByteArray(CRLF),
+                0,
+                body,
+                builder.Length + fileContents.Length,
+                CRLF.Length);
+            Array.Copy(
+                StrToByteArray(twoDashes),
+                0,
+                body,
+                builder.Length + fileContents.Length + CRLF.Length,
+                twoDashes.Length);
+            Array.Copy(
+                StrToByteArray(boundary),
+                0,
+                body,
+                builder.Length + fileContents.Length + CRLF.Length + twoDashes.Length,
+                boundary.Length);
+            Array.Copy(
+                StrToByteArray(twoDashes),
+                0,
+                body,
+                builder.Length + fileContents.Length + CRLF.Length + twoDashes.Length + boundary.Length,
+                twoDashes.Length);
+            Array.Copy(
+                StrToByteArray(CRLF),
+                0,
+                body,
+                builder.Length + fileContents.Length + CRLF.Length + twoDashes.Length + boundary.Length + twoDashes.Length,
+                CRLF.Length);
+
+            // Create the full correct URI.
+            builder = new StringBuilder();
+            builder.Append(protocol);
+            builder.Append("://");
+            builder.Append(url);
+            String uri = builder.ToString();
+
+            try
+            {
+                // Create and initialize an HTTP request to the desired URI.
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(uri));
+                request.CookieContainer = App.Cookies;
+                request.Method = "POST";
+                request.ContentType = "multipart/form-data;boundary=" + boundary;
+
+                // Create a request state.  
+                RequestState requestState = new RequestState();
+                requestState.Body = body;
+                requestState.Request = request;
+                requestState.ResponseDelegate = responseDelegate;
+                requestState.FailDelegate = failDelegate;
+
+                // Start the asynchronous request.
+                request.BeginGetRequestStream(new AsyncCallback(WriteBody), requestState);
             }
             catch (Exception e)
             {
@@ -140,18 +285,18 @@ namespace GeoSight
         #region Callback functions
 
         /// <summary>
-        /// Writes the POST variables to the body of a POST request.
+        /// Writes the body of a POST request.
         /// </summary>
         /// <param name="asynchronousResult">The status of the async operation.</param>
-        private void WritePOSTVars(IAsyncResult asynchronousResult)
+        private void WriteBody(IAsyncResult asynchronousResult)
         {
             RequestState requestState = (RequestState)asynchronousResult.AsyncState;
             try
             {
                 HttpWebRequest request = requestState.Request;
                 Stream stream = request.EndGetRequestStream(asynchronousResult);
-                StreamWriter writer = new StreamWriter(stream);
-                writer.Write(requestState.Vars);
+                BinaryWriter writer = new BinaryWriter(stream);
+                writer.Write(requestState.Body);
                 writer.Flush();
                 writer.Close();
                 request.BeginGetResponse(new AsyncCallback(ReadResponse), requestState);

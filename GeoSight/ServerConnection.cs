@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
 namespace GeoSight
 {
@@ -26,6 +28,8 @@ namespace GeoSight
         private static String loginURL = "/user_sessions.json";
 
         private static String sightsListURL = "/sights.json";
+
+        private static String uploadURL = "/photos";
 
         #endregion
 
@@ -126,6 +130,39 @@ namespace GeoSight
             this.webClient.SendReqest(
                 true,
                 serverURL + registerURL,
+                vars,
+                responseDelegate,
+                failDelegate);
+        }
+
+        /// <summary>
+        /// Send a message to the web server, uploading a new picture.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="imageBytes"></param>
+        /// <param name="responseDelegate"></param>
+        /// <param name="failDelegate"></param>
+        public void UploadPhoto(
+            int userID,
+            byte[] imageBytes,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            // Build a dictionary which contains the user ID.
+            // This dictionary will be used to create the POST variables.
+            Dictionary<String, String> vars = new Dictionary<String, String>();
+            vars.Add("photo[user_id]", userID.ToString());
+
+            // Create the file data needed for the upload.
+            String fileName = App.ImageFilename;
+            String varName = "photo[file]";
+
+            // Upload the photo.
+            this.webClient.UploadFile(
+                serverURL + uploadURL,
+                fileName,
+                varName,
+                imageBytes,
                 vars,
                 responseDelegate,
                 failDelegate);
