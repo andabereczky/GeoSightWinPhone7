@@ -32,7 +32,11 @@ namespace GeoSight
         /// </summary>
         private string name;
 
-        //private double radius;
+        /// <summary>
+        /// The radius of the sight.
+        /// </summary>
+        private double radius;
+
         //private int userID;
         //private DateTime createdAt;
         //private DateTime updatedAt;
@@ -85,6 +89,22 @@ namespace GeoSight
             }
         }
 
+        public double Radius
+        {
+            get
+            {
+                return radius;
+            }
+            set
+            {
+                if (value != radius)
+                {
+                    radius = value;
+                    NotifyPropertyChanged("Radius");
+                }
+            }
+        }
+
         public double Latitude
         {
             get
@@ -129,7 +149,7 @@ namespace GeoSight
         {
             ID = Convert.ToInt32(jsonSight["id"].ToString());
             Name = jsonSight["name"].ToString();
-            //yadda = jsonSight["radius"];
+            Radius = Convert.ToDouble(jsonSight["radius"].ToString());
             //yadda = jsonSight["created_at"];
             //yadda = jsonSight["updated_at"];
             //yadda = jsonSight["user_id"];

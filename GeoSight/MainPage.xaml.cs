@@ -159,7 +159,7 @@ namespace GeoSight
         private void btn_ViewPictures_Click(object sender, RoutedEventArgs e)
         {
             PhotoChooserTask task = new PhotoChooserTask();
-            //           task.Completed += new EventHandler<PhotoResult>(showPictures);
+            task.Completed += new EventHandler<PhotoResult>(showPictures);
             task.Show();
         }
 
@@ -222,17 +222,18 @@ namespace GeoSight
                 new EventDelegates.HTTPFailDelegate(FailUploadRequest));
         }
 
-        /*
-                private void showPictures(object sender, PhotoResult e)
-                {
+        private void showPictures(object sender, PhotoResult e)
+        {
 
-                    BitmapImage image = new BitmapImage();
+            BitmapImage image = new BitmapImage();
 
-                    if (e.ChosenPhoto != null)
-                    {
-                        image.SetSource(e.ChosenPhoto);
-                    }
-                }
-        */
+            if (e.ChosenPhoto != null)
+            {
+                image.SetSource(e.ChosenPhoto);
+            }
+
+            // TODO: change this to save the photo path
+            App.LoadedImage = image;
+        }
     }
 }
