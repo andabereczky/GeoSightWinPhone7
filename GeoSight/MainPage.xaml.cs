@@ -81,10 +81,13 @@ namespace GeoSight
 
                 //Take JPEG stream and decode into a WriteableBitmap object.
                 App.CapturedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
+
+                // Save the captured image to disk.
+                SaveCapturedImage();
             }
         }
 
-        private void SavePhotoButton_Click(object sender, RoutedEventArgs e)
+        private void SaveCapturedImage()
         {
             Stream stream;
             bool useFile = true;
