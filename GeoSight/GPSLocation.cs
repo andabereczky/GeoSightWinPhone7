@@ -132,17 +132,6 @@ namespace GeoSight
             Debug.WriteLine("dist:" + distance);
 
             return distance;
-
-
-            /*
-            double x = Math.Abs(destinationLatitude - Latitude);
-            double y = Math.Abs(destinationLongitude - Longitude);
-
-            double distance = Math.Sqrt(x * x + y * y);
-
-            return distance;
-            */
-
         }
 
 

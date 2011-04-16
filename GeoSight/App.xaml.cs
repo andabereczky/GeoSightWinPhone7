@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Xna.Framework.Media;
 
 namespace GeoSight
 {
@@ -20,7 +21,6 @@ namespace GeoSight
         // "The road to programming hell is paved with global variables."
         public static ServerConnection ServerConnection = new ServerConnection();
         public static String ImageFilename = "GeoSightPhoto.jpg";
-        public static WriteableBitmap CapturedImage = null;
         public static CookieContainer Cookies = new CookieContainer();
         public static UInt32 LoginUserID = 0;
         public static String LoginFirstName = String.Empty;
@@ -28,7 +28,6 @@ namespace GeoSight
         public static double CurrentLatitude = 0.0;
         public static double CurrentLongitude = 0.0;
         public static Boolean InDestination = false;
-        public static BitmapImage LoadedImage = null;
 
         /// <summary>
         /// Constructor for the Application object.

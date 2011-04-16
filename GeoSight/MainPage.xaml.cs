@@ -78,21 +78,21 @@ namespace GeoSight
 
             if (e.TaskResult == TaskResult.OK && e.ChosenPhoto != null)
             {
-
-                //Take JPEG stream and decode into a WriteableBitmap object.
-                App.CapturedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
-
                 // Save the captured image to disk.
-                SaveCapturedImage();
+                SaveCapturedImage(e.ChosenPhoto);
             }
         }
 
-        private void SaveCapturedImage()
+        private void SaveCapturedImage(Stream imageSource)
         {
             Stream stream;
             bool useFile = true;
 
-            if (useFile) {
+            //Take JPEG stream and decode into a WriteableBitmap object.
+            WriteableBitmap wb = PictureDecoder.DecodeJpeg(imageSource);
+
+            if (useFile)
+            {
 
                 // Create a filename for JPEG file in isolated storage.
                 String tempJPEG = "TempJPEG";
@@ -106,9 +106,6 @@ namespace GeoSight
 
                 IsolatedStorageFileStream myFileStream = myStore.CreateFile(tempJPEG);
 
-                // Get the most-recently captured bitmap.
-                WriteableBitmap wb = App.CapturedImage;
-
                 // Encode WriteableBitmap object to a JPEG stream.
                 System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, myFileStream, wb.PixelWidth, wb.PixelHeight, 0, 85);
                 myFileStream.Close();
@@ -118,7 +115,7 @@ namespace GeoSight
             } else {
 
                 // Create a byte stream from the most-recently captured bitmap.
-                byte[] bytes = ToByteArray(App.CapturedImage);
+                byte[] bytes = ToByteArray(wb);
                 stream = new MemoryStream(bytes);
             }
 
@@ -154,13 +151,6 @@ namespace GeoSight
         private void btn_PickSightFromMap_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new Uri("/PickSightMapPage.xaml", UriKind.Relative));
-        }
-
-        private void btn_ViewPictures_Click(object sender, RoutedEventArgs e)
-        {
-            PhotoChooserTask task = new PhotoChooserTask();
-            task.Completed += new EventHandler<PhotoResult>(showPictures);
-            task.Show();
         }
 
         private void ProcessUploadRequest(Stream responseStream)
@@ -202,7 +192,7 @@ namespace GeoSight
             }
             if (picture == null)
             {
-                MessageBox.Show("Please take and save a picture.");
+                MessageBox.Show("Please take a picture.");
                 return;
             }
 
@@ -220,20 +210,6 @@ namespace GeoSight
                 imageBytes,
                 new EventDelegates.HTTPResponseDelegate(ProcessUploadRequest),
                 new EventDelegates.HTTPFailDelegate(FailUploadRequest));
-        }
-
-        private void showPictures(object sender, PhotoResult e)
-        {
-
-            BitmapImage image = new BitmapImage();
-
-            if (e.ChosenPhoto != null)
-            {
-                image.SetSource(e.ChosenPhoto);
-            }
-
-            // TODO: change this to save the photo path
-            App.LoadedImage = image;
         }
     }
 }

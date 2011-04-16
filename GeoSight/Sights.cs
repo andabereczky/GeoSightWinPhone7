@@ -28,7 +28,7 @@ namespace GeoSight
         {
             for (int i = 0; i <= jsonSights.Count - 1; i++)
             {
-                this.Add(new Sight(jsonSights[i]["sight"]));
+                this.Add(new Sight(jsonSights[i]));
             }
         }
 
