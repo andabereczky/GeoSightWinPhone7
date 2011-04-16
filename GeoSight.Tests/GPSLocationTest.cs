@@ -10,8 +10,7 @@ namespace GeoSight.Tests
         public void TestGPSLocation()
         {
             GPSLocation location = new GPSLocation();
-            // TODO: uncomment when testing on device
-            // Assert.IsTrue(location.Started);
+            Assert.IsTrue(location.Started);
         }
     }
 }

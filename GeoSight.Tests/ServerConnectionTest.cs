@@ -16,19 +16,8 @@ namespace GeoSight.Tests
             ServerConnection sc = new ServerConnection();
 
             // User information.
-            //string firstName = "Harry";
-            //string lastName = "Potter";
-            string emailAddress = "harry.potter@gmail.com";
+            string emailAddress = "a@b.com";
             string password = "1234";
-
-            //sc.Register(
-            //    firstName,
-            //    lastName,
-            //    emailAddress,
-            //    password,
-            //    password,
-            //    new EventDelegates.HTTPResponseDelegate(ProcessResponse),
-            //    new EventDelegates.HTTPFailDelegate(FailRequest));
 
             sc.Login(
                 emailAddress,
@@ -51,7 +40,7 @@ namespace GeoSight.Tests
             binReader.Close();
 
             sc.UploadPhoto(
-                8, // Harry Potter's user ID
+                4, // my user ID
                 imageBytes,
                 new EventDelegates.HTTPResponseDelegate(ProcessResponse),
                 new EventDelegates.HTTPFailDelegate(FailRequest));

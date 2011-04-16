@@ -47,9 +47,9 @@ namespace GeoSight
             // current location and the location of the given sight
             Func<Sight, double> distanceToCurrentLocation = delegate(Sight sight)
             {
-                double a = currentLatitude - sight.Latitude;
-                double b = currentLongitude - sight.Longitude;
-                return Math.Sqrt(a*a + b*b);
+                return GPSLocation.CalculateDistance(
+                    currentLatitude, currentLongitude,
+                    sight.Latitude, sight.Longitude);
             };
 
             // Sort the given sights according to their distance to the

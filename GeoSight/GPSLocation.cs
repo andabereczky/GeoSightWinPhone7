@@ -78,8 +78,12 @@ namespace GeoSight
 
             if (App.SelectedSight != null)
             {
-                previousDistance = CalculateDistance(PreviousLatitude, PreviousLongitude);
-                currentDistance = CalculateDistance(CurrentLatitude, CurrentLongitude);
+                previousDistance = CalculateDistance(
+                    PreviousLatitude, PreviousLongitude,
+                    App.SelectedSight.Latitude, App.SelectedSight.Longitude);
+                currentDistance = CalculateDistance(
+                    CurrentLatitude, CurrentLongitude,
+                    App.SelectedSight.Latitude, App.SelectedSight.Longitude);
                 radius = App.SelectedSight.Radius;
                 Debug.WriteLine("prev:" + previousDistance);
                 Debug.WriteLine("curr:" + currentDistance);
@@ -97,26 +101,34 @@ namespace GeoSight
         }
 
         /// <summary>
-        /// Calculate the distance between the destination and input latitude and longitude
+        /// Calculates the distance between two points on the surface of
+        /// the Earth.
         /// </summary>
-        /// <param name="Latitude"></param>
-        /// <param name="Longitude"></param>
-        private double CalculateDistance(double Latitude, double Longitude)
+        /// <param name="latitude1"></param>
+        /// <param name="longitude1"></param>
+        /// <param name="latitude2"></param>
+        /// <param name="longitude2"></param>
+        /// <returns></returns>
+        public static double CalculateDistance(
+            double latitude1,
+            double longitude1,
+            double latitude2,
+            double longitude2)
         {
             double p = 3960*1609.344;
             //θ
-            double currentLongitudeAngle = Longitude;
+            double currentLongitudeAngle = longitude1;
             //φ
-            double currentLatitudeAngle = 90 - Latitude;
+            double currentLatitudeAngle = 90 - latitude1;
 
             //convert to radians
             currentLongitudeAngle = currentLongitudeAngle * (2 * Math.PI) / 360;
             currentLatitudeAngle = currentLatitudeAngle * (2 * Math.PI) / 360;
 
             //θ
-            double destinationLongitudeAngle = App.SelectedSight.Longitude;
+            double destinationLongitudeAngle = longitude2;
             //φ
-            double destinationLatitudeAngle = 90 - App.SelectedSight.Latitude;
+            double destinationLatitudeAngle = 90 - latitude2;
 
             //convert to radians
             destinationLongitudeAngle = destinationLongitudeAngle * (2 * Math.PI)/360;

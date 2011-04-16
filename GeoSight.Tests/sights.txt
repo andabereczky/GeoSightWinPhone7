@@ -1,4 +1,4 @@
 [
-	{"sight":{"name":"well","radius":20.0,"created_at":"2011-03-10T21:07:52Z","latitude":40.1182972222222,"updated_at":"2011-03-10T21:07:52Z","id":1,"user_id":1,"longitude":-88.2436277777778}},
-	{"sight":{"name":"Das Cafe","radius":20.0,"created_at":"2011-03-11T04:56:32Z","latitude":40.1123805555556,"updated_at":"2011-03-11T04:56:32Z","id":2,"user_id":1,"longitude":-88.2082388888889}}
+	{"name":"well","radius":20.0,"created_at":"2011-03-10T21:07:52Z","latitude":40.1182972222222,"updated_at":"2011-03-10T21:07:52Z","id":1,"user_id":1,"longitude":-88.2436277777778},
+	{"name":"Das Cafe","radius":20.0,"created_at":"2011-03-11T04:56:32Z","latitude":40.1123805555556,"updated_at":"2011-03-11T04:56:32Z","id":2,"user_id":1,"longitude":-88.2082388888889}
 ]
