@@ -36,6 +36,7 @@
             <Button Content="Take a photo" HorizontalAlignment="Left" Margin="6,223,0,0" Name="btn_TakePhotoButton" VerticalAlignment="Top" Click="TakePhotoButton_Click" />
             <Button Content="Pick Sight From Map" Height="72" HorizontalAlignment="Left" Margin="196,118,0,0" Name="btn_PickSightFromMap" VerticalAlignment="Top" Width="225" FontSize="18" Click="btn_PickSightFromMap_Click" />
             <Button Content="Upload" HorizontalAlignment="Left" Margin="243,223,0,0" Name="UploadPhotoButton" VerticalAlignment="Top" Click="UploadPhotoButton_Click" />
+            <Image HorizontalAlignment="Left" Margin="6,301,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" />
         </Grid>
     </Grid>
  

@@ -55,11 +55,58 @@ namespace GeoSight
             if (App.SelectedSight != null)
             {
                 PickSightMessageTextBlock.Text = "Selected " + App.SelectedSight.Name;
+                DownloadSelectedSightPicture();
             }
             else
             {
                 PickSightMessageTextBlock.Text = "No sight selected.";
             }
+        }
+
+        private void DownloadSelectedSightPicture()
+        {
+            App.ServerConnection.DownloadPicture(
+                App.SelectedSight.ThumbnailURL,
+                new EventDelegates.HTTPResponseDelegate(ProcessDownloadRequest),
+                new EventDelegates.HTTPFailDelegate(FailDownloadRequest));
+        }
+
+        private void ProcessDownloadRequest(Stream responseStream)
+        {
+            Debug.WriteLine("Photo download succeeded!");
+
+            // Read image bytes from HTTP response.
+            byte[] contents;
+            using (BinaryReader bReader = new BinaryReader(responseStream))
+            {
+                contents = bReader.ReadBytes((int)responseStream.Length);
+            }
+
+            Deployment.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    // Save image to isolated storage.
+                    String tempJPEG = "TempJPEG";
+                    var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+                    if (myStore.FileExists(tempJPEG))
+                    {
+                        myStore.DeleteFile(tempJPEG);
+                    }
+                    IsolatedStorageFileStream stream = myStore.CreateFile("file.jpg");
+                    stream.Write(contents, 0, contents.Length);
+                    stream.Close();
+
+                    // Display image.
+                    stream = new IsolatedStorageFileStream("file.jpg", FileMode.Open, myStore);
+                    BitmapImage image = new BitmapImage();
+                    image.SetSource(stream);
+                    image1.Source = image;
+                }));
+        }
+
+        private void FailDownloadRequest(String message)
+        {
+            Debug.WriteLine("Photo download failed:\n" + message);
         }
 
         private void TakePhotoButton_Click(object sender, RoutedEventArgs e)

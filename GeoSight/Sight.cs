@@ -51,6 +51,11 @@ namespace GeoSight
         /// </summary>
         private double longitude;
 
+        /// <summary>
+        /// The URL of the thumbnail image for the sight.
+        /// </summary>
+        private string thumbnailURL;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
@@ -137,6 +142,22 @@ namespace GeoSight
             }
         }
 
+        public string ThumbnailURL
+        {
+            get
+            {
+                return thumbnailURL;
+            }
+            set
+            {
+                if (value != thumbnailURL)
+                {
+                    thumbnailURL = value;
+                    NotifyPropertyChanged("ThumbnailURL");
+                }
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -155,6 +176,7 @@ namespace GeoSight
             //yadda = jsonSight["user_id"];
             Latitude = Convert.ToDouble(jsonSight["latitude"].ToString());
             Longitude = Convert.ToDouble(jsonSight["longitude"].ToString());
+            ThumbnailURL = jsonSight["thumbnail"].ToString();
         }
 
         #endregion

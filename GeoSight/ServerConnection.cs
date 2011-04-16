@@ -170,6 +170,25 @@ namespace GeoSight
                 failDelegate);
         }
 
+        /// <summary>
+        /// Send a message to Amazon S3, requesting a picture.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="responseDelegate"></param>
+        /// <param name="failDelegate"></param>
+        public void DownloadPicture(
+            String url,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            this.webClient.SendReqest(
+                false,
+                url.Substring(9), // remove the "https://" from the beginning of the string
+                new Dictionary<String, String>(),
+                responseDelegate,
+                failDelegate);
+        }
+
         #endregion
     }
 }
