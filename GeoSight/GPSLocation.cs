@@ -103,7 +103,7 @@ namespace GeoSight
         /// <param name="Longitude"></param>
         private double CalculateDistance(double Latitude, double Longitude)
         {
-            double p = 3960;
+            double p = 3960*1609.344;
             //θ
             double currentLongitudeAngle = Longitude;
             //φ

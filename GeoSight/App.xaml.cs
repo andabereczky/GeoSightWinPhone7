@@ -25,8 +25,8 @@ namespace GeoSight
         public static UInt32 LoginUserID = 0;
         public static String LoginFirstName = String.Empty;
         public static Sight SelectedSight = null;
-        public static double CurrentLatitude = 0.0;
-        public static double CurrentLongitude = 0.0;
+        public static Double CurrentLatitude = 0.0;
+        public static Double CurrentLongitude = 0.0;
         public static Boolean InDestination = false;
 
         /// <summary>

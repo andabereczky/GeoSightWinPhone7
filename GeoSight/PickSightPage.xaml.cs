@@ -101,7 +101,7 @@ namespace GeoSight
                 // Created a collection of sights sorted by the distance to the current location
                 Sights sights = new Sights(jsonSights);
                 ObservableCollection<Sight> sortedSights =
-                    Sights.GetSortedSights(sights, 40.115627, -88.220987);
+                    Sights.GetSortedSights(sights, App.CurrentLatitude, App.CurrentLongitude);
 
                 // If the HTTP response parsed as JSON, we got the list of sights.
                 Deployment.Current.Dispatcher.BeginInvoke(

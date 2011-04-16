@@ -152,8 +152,8 @@ namespace GeoSight
             // This dictionary will be used to create the POST variables.
             Dictionary<String, String> vars = new Dictionary<String, String>();
             vars.Add("photo[user_id]", userID.ToString());
-            vars.Add("photo[latitude]", Convert.ToString(40.115627));
-            vars.Add("photo[longitude]", Convert.ToString(-88.220987));
+            vars.Add("photo[latitude]", Convert.ToString(App.CurrentLatitude));
+            vars.Add("photo[longitude]", Convert.ToString(App.CurrentLongitude));
 
             // Create the file data needed for the upload.
             String fileName = App.ImageFilename;

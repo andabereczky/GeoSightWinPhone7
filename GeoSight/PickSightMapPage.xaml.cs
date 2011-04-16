@@ -135,7 +135,7 @@ namespace GeoSight
                 NotificationTextBlock.Dispatcher.BeginInvoke(
                     new Action(() =>
                     {
-                        sightsMap.Center = new GeoCoordinate(40.115627, -88.220987);
+                        sightsMap.Center = new GeoCoordinate(App.CurrentLatitude, App.CurrentLongitude);
                         sightsMap.ZoomLevel = 8;
                     })
                 );
