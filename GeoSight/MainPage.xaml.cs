@@ -92,12 +92,12 @@ namespace GeoSight
                     {
                         myStore.DeleteFile(tempJPEG);
                     }
-                    IsolatedStorageFileStream stream = myStore.CreateFile("file.jpg");
+                    IsolatedStorageFileStream stream = myStore.CreateFile(tempJPEG);
                     stream.Write(contents, 0, contents.Length);
                     stream.Close();
 
                     // Display image.
-                    stream = new IsolatedStorageFileStream("file.jpg", FileMode.Open, myStore);
+                    stream = new IsolatedStorageFileStream(tempJPEG, FileMode.Open, myStore);
                     BitmapImage image = new BitmapImage();
                     image.SetSource(stream);
                     image1.Source = image;
