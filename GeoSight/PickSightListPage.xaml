@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="GeoSight.PickSightMapPage"
+    x:Class="GeoSight.PickSightListPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -10,8 +10,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" Visibility="Visible">
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -28,12 +28,22 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock HorizontalAlignment="Left" Margin="6,0,0,0" Name="NotificationTextBlock" Text="" VerticalAlignment="Top" Foreground="Red" />
-            <my:Map Height="500" HorizontalAlignment="Left" Name="sightsMap" VerticalAlignment="Top" Width="450" Margin="0,40,0,0" Visibility="Collapsed" CredentialsProvider="Av3YezthOiiTv0sNLLNQNJnb0MNjFb7yexZIKnutZuYL33vDg_SCC0seVMpoPr7R" ZoomBarVisibility="Collapsed" LogoVisibility="Collapsed" CopyrightVisibility="Collapsed" />
-            <Button Content="+" Height="75" HorizontalAlignment="Left" Margin="-12,545,0,0" Name="btn_ZoomInButton" VerticalAlignment="Top" Width="77" Click="btn_ZoomInButton_Click" Visibility="Collapsed" />
-            <Button Content="-" Height="75" HorizontalAlignment="Left" Margin="54,545,0,0" Name="btn_ZoomOutButton" VerticalAlignment="Top" Width="80" Click="btn_ZoomOutButton_Click" Visibility="Collapsed" />
-            <Button Content="Road View" Height="75" HorizontalAlignment="Left" Margin="127,545,0,0" Name="btn_ChangeToRoadViewButton" VerticalAlignment="Top" Width="179" Click="btn_ChangeToRoadViewButton_Click" Visibility="Collapsed" />
-            <Button Content="Aerial View" Height="72" HorizontalAlignment="Left" Margin="290,548,0,0" Name="btn_ChangeToAerialViewButton" VerticalAlignment="Top" Width="178" Click="btn_ChangeToAerialViewButton_Click" Visibility="Collapsed" />
+            <TextBlock HorizontalAlignment="Left" Margin="6,6,0,0" Name="NotificationTextBlock" Text="Please wait..." VerticalAlignment="Top" Foreground="Red" />
+            <ListBox Height="607" HorizontalAlignment="Left" Margin="6,39,0,0" Name="SightsList" VerticalAlignment="Top" Width="474" SelectionChanged="SightsList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel x:Name="stackPanelSightsList" Orientation="Vertical" >
+                            <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="40" Text="{Binding Name}"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Lat =" Foreground="LightBlue"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Latitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Long =" Foreground="LightBlue"/>
+                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Longitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
  

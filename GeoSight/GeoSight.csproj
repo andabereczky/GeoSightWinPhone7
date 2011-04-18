@@ -79,6 +79,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="EventDelegates.cs" />
+    <Compile Include="PickSightListPage.xaml.cs">
+      <DependentUpon>PickSightListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PickSightMapPage.xaml.cs">
       <DependentUpon>PickSightMapPage.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PickSightListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

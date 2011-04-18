@@ -28,35 +28,9 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock HorizontalAlignment="Left" Margin="6,6,0,0" Name="NotificationTextBlock" Text="Please wait..." VerticalAlignment="Top" Foreground="Red" />
-            <ListBox Height="607" HorizontalAlignment="Left" Margin="6,39,0,0" Name="SightsList" VerticalAlignment="Top" Width="474" SelectionChanged="SightsList_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel x:Name="stackPanelSightsList" Orientation="Vertical" >
-                            <TextBlock HorizontalAlignment="Left" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="40" Text="{Binding Name}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Lat =" Foreground="LightBlue"/>
-                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Latitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
-                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="Long =" Foreground="LightBlue"/>
-                                <TextBlock Margin="0,0,10,0" FontSize="25" Text="{Binding Longitude}" Foreground="{StaticResource PhoneForegroundBrush}"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Button Content="From a list" HorizontalAlignment="Center" Margin="6,6,6,0" Name="btn_FromList" VerticalAlignment="Top" FontSize="48" Width="360" Click="btn_FromList_Click" />
+            <Button Content="From a map" HorizontalAlignment="Center" Margin="48,114,48,0" Name="btn_FromMap" VerticalAlignment="Top" FontSize="48" Width="360" Click="btn_FromMap_Click" />
         </Grid>
     </Grid>
- 
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>

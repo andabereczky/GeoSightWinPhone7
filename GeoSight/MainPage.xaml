@@ -28,28 +28,13 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="Register" HorizontalAlignment="Left" Margin="6,6,0,0" Name="btn_RegisterButton" VerticalAlignment="Top" Click="RegisterButton_Click" />
-            <Button Content="Login" HorizontalAlignment="Left" Margin="157,6,0,0" Name="btn_LoginButton" VerticalAlignment="Top" Click="LoginButton_Click" />
-            <TextBlock HorizontalAlignment="Right" Margin="6,0,0,0" Name="LoginMessageTextBlock" Text="Not logged in." VerticalAlignment="Top" TextAlignment="Right" />
-            <Button Content="Pick a Sight" HorizontalAlignment="Left" Margin="6,115,0,0" Name="btn_PickASightButton" VerticalAlignment="Top" Click="PickASightButton_Click" />
-            <TextBlock HorizontalAlignment="Right" Margin="6,75,0,0" Name="PickSightMessageTextBlock" Text="No sight selected." VerticalAlignment="Top" TextAlignment="Right" />
-            <Button Content="Take a photo" HorizontalAlignment="Left" Margin="6,223,0,0" Name="btn_TakePhotoButton" VerticalAlignment="Top" Click="TakePhotoButton_Click" />
-            <Button Content="Pick Sight From Map" Height="72" HorizontalAlignment="Left" Margin="196,118,0,0" Name="btn_PickSightFromMap" VerticalAlignment="Top" Width="225" FontSize="18" Click="btn_PickSightFromMap_Click" />
-            <Button Content="Upload" HorizontalAlignment="Left" Margin="243,223,0,0" Name="UploadPhotoButton" VerticalAlignment="Top" Click="UploadPhotoButton_Click" />
-            <Image HorizontalAlignment="Left" Margin="6,301,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" />
+            <TextBlock HorizontalAlignment="Right" Margin="6,6,6,0" Name="LoginMessageTextBlock" Text="Not logged in." VerticalAlignment="Top" TextAlignment="Right" />
+            <Button Content="Login" HorizontalAlignment="Left" Margin="6,40,6,0" Name="btn_LoginButton" VerticalAlignment="Top" Click="LoginButton_Click" FontSize="48" />
+            <TextBlock HorizontalAlignment="Left" Margin="184,71,0,0" Name="textBlock1" Text="or" VerticalAlignment="Top" FontSize="36" />
+            <Button Content="Register" HorizontalAlignment="Right" Margin="6,40,6,0" Name="btn_RegisterButton" VerticalAlignment="Top" Click="RegisterButton_Click" FontSize="48" />
+            <Button Content="Pick a Sight" HorizontalAlignment="Center" Margin="0,148,0,0" Name="btn_PickASightButton" VerticalAlignment="Top" Click="PickASightButton_Click" FontSize="48" />
+            <Button Content="Take a Photo" HorizontalAlignment="Center" Margin="0,256,0,0" Name="btn_TakePhotoButton" VerticalAlignment="Top" Click="TakePhotoButton_Click" FontSize="48" />
         </Grid>
     </Grid>
- 
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 </phone:PhoneApplicationPage>

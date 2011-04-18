@@ -50,19 +50,9 @@ namespace GeoSight
             {
                 LoginMessageTextBlock.Text = "Not logged in.";
             }
-
-            // Check if a sight has been selected.
-            if (App.SelectedSight != null)
-            {
-                PickSightMessageTextBlock.Text = "Selected " + App.SelectedSight.Name;
-                DownloadSelectedSightPicture();
-            }
-            else
-            {
-                PickSightMessageTextBlock.Text = "No sight selected.";
-            }
         }
 
+        /*
         private void DownloadSelectedSightPicture()
         {
             App.ServerConnection.DownloadPicture(
@@ -70,7 +60,7 @@ namespace GeoSight
                 new EventDelegates.HTTPResponseDelegate(ProcessDownloadRequest),
                 new EventDelegates.HTTPFailDelegate(FailDownloadRequest));
         }
-
+        
         private void ProcessDownloadRequest(Stream responseStream)
         {
             Debug.WriteLine("Photo download succeeded!");
@@ -108,6 +98,7 @@ namespace GeoSight
         {
             Debug.WriteLine("Photo download failed:\n" + message);
         }
+        */
 
         private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
         {
@@ -126,11 +117,14 @@ namespace GeoSight
             if (e.TaskResult == TaskResult.OK && e.ChosenPhoto != null)
             {
                 // Save the captured image to disk.
-                SaveCapturedImage(e.ChosenPhoto);
+                Picture pic = SaveCapturedImage(e.ChosenPhoto);
+
+                // Upload the image to the server.
+                UploadPhoto(pic);
             }
         }
 
-        private void SaveCapturedImage(Stream imageSource)
+        private Picture SaveCapturedImage(Stream imageSource)
         {
             Stream stream;
             bool useFile = true;
@@ -170,6 +164,7 @@ namespace GeoSight
             MediaLibrary library = new MediaLibrary();
             Picture pic = library.SavePicture(App.ImageFilename, stream);
             stream.Close();
+            return pic;
         }
 
         private static byte[] ToByteArray(WriteableBitmap bmp) {
@@ -192,12 +187,8 @@ namespace GeoSight
 
         private void PickASightButton_Click(object sender, RoutedEventArgs e)
         {
+            App.SelectedSight = null;
             this.NavigationService.Navigate(new Uri("/PickSightPage.xaml", UriKind.Relative));
-        }
-
-        private void btn_PickSightFromMap_Click(object sender, RoutedEventArgs e)
-        {
-            this.NavigationService.Navigate(new Uri("/PickSightMapPage.xaml", UriKind.Relative));
         }
 
         private void ProcessUploadRequest(Stream responseStream)
@@ -217,29 +208,12 @@ namespace GeoSight
             Debug.WriteLine("Upload failed:\n" + message);
         }
 
-        private void UploadPhotoButton_Click(object sender, RoutedEventArgs e)
+        private void UploadPhoto(Picture picture)
         {
             // Make sure the user is logged in.
             if (App.LoginFirstName == String.Empty)
             {
                 MessageBox.Show("Please log in.");
-                return;
-            }
-
-            // Find the photo in the media library.
-            MediaLibrary library = new MediaLibrary();
-            Picture picture = null;
-            foreach (Picture pic in library.Pictures)
-            {
-                if (pic.Name == App.ImageFilename)
-                {
-                    picture = pic;
-                    break;
-                }
-            }
-            if (picture == null)
-            {
-                MessageBox.Show("Please take a picture.");
                 return;
             }
 
