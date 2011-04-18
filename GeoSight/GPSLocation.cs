@@ -90,12 +90,20 @@ namespace GeoSight
 
             }
 
-            //if previous distance is not in the range and current distance is in the range, show message box
-
-            if (previousDistance > radius && currentDistance < radius)
+            // If the current distance is in the range...
+            if (currentDistance <= radius)
             {
-                //show messagebox
-                MessageBox.Show("Arrived At Destination!");
+                // If the previous distance is not in the range...
+                if (previousDistance > radius)
+                {
+                    // Alert the user that he/she has arrived at the destination.
+                    MessageBox.Show("Arrived at " + App.SelectedSight.Name + "!");
+                }
+                App.InDestination = true;
+            }
+            else
+            {
+                App.InDestination = false;
             }
             
         }

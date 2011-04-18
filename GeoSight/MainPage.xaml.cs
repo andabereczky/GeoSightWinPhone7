@@ -15,14 +15,9 @@ namespace GeoSight
     public partial class MainPage : PhoneApplicationPage
     {
         /// <summary>
-        /// The camera used to capture a picture.
+        /// The task used to capture a picture.
         /// </summary>
-        CameraCaptureTask ctask;
-
-        /// <summary>
-        /// Supplies location data that is based on latitude and longitude.
-        /// </summary>
-        GPSLocation location;
+        CameraCaptureTask takeAPhotoTask;
 
         /// <summary>
         /// Constructor.
@@ -32,11 +27,11 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize the camera task
-            ctask = new CameraCaptureTask();
-            ctask.Completed += new EventHandler<PhotoResult>(ctask_Completed);
+            takeAPhotoTask = new CameraCaptureTask();
+            takeAPhotoTask.Completed += new EventHandler<PhotoResult>(TakeAPhotoTask_Completed);
 
             // Initialize the GPS location
-            location = new GPSLocation();
+            new GPSLocation();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -102,7 +97,28 @@ namespace GeoSight
 
         private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
         {
-            ctask.Show();
+            // Make sure the user is logged in.
+            if (App.LoginFirstName == String.Empty)
+            {
+                MessageBox.Show("Please log in.");
+                return;
+            }
+
+            // Make sure that the user has chosen a sight.
+            if (App.SelectedSight == null)
+            {
+                MessageBox.Show("Please pick a sight.");
+                return;
+            }
+
+            // Make sure that the user has navigated to the chosen sight.
+            if (!App.InDestination)
+            {
+                MessageBox.Show("Please go to the chosen sight.");
+                return;
+            }
+
+            takeAPhotoTask.Show();
         }
 
         /// <summary>
@@ -111,7 +127,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void ctask_Completed(object sender, PhotoResult e)
+        void TakeAPhotoTask_Completed(object sender, PhotoResult e)
         {
 
             if (e.TaskResult == TaskResult.OK && e.ChosenPhoto != null)
@@ -210,13 +226,6 @@ namespace GeoSight
 
         private void UploadPhoto(Picture picture)
         {
-            // Make sure the user is logged in.
-            if (App.LoginFirstName == String.Empty)
-            {
-                MessageBox.Show("Please log in.");
-                return;
-            }
-
             // Load the photo taken with the camera into memory.
             Stream imageStream = picture.GetImage();
             int imageSize = (int)imageStream.Length;
