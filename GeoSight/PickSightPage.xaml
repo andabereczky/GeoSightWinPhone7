@@ -28,8 +28,8 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="From a list" HorizontalAlignment="Center" Margin="6,6,6,0" Name="btn_FromList" VerticalAlignment="Top" FontSize="48" Width="360" Click="btn_FromList_Click" />
-            <Button Content="From a map" HorizontalAlignment="Center" Margin="48,114,48,0" Name="btn_FromMap" VerticalAlignment="Top" FontSize="48" Width="360" Click="btn_FromMap_Click" />
+            <Button Content="From a list" HorizontalAlignment="Center" Margin="6,6,6,0" Name="FromListButton" VerticalAlignment="Top" FontSize="48" Width="360" Click="ShowPickSightFromListPage" />
+            <Button Content="From a map" HorizontalAlignment="Center" Margin="48,114,48,0" Name="FromMapButton" VerticalAlignment="Top" FontSize="48" Width="360" Click="ShowPickSightFromMapPage" />
         </Grid>
     </Grid>
 
