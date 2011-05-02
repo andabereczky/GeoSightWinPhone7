@@ -35,6 +35,9 @@ namespace GeoSight
 
         #region Private member variables
 
+        /// <summary>
+        /// The web client object used to send requests to the server.
+        /// </summary>
         private WebClient webClient;
 
         #endregion
@@ -52,15 +55,17 @@ namespace GeoSight
 
         #endregion
 
-        # region Public member functions
+        # region Public methods
 
         /// <summary>
         /// Send a message to the web server, requesting to login.
         /// </summary>
-        /// <param name="emailAddress"></param>
-        /// <param name="password"></param>
-        /// <param name="responseDelegate"></param>
-        /// <param name="failDelegate"></param>
+        /// <param name="emailAddress">The user's email address.</param>
+        /// <param name="password">The user's password.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
         public void Login(
             String emailAddress,
             String password,
@@ -84,8 +89,10 @@ namespace GeoSight
         /// <summary>
         /// Send a message to the web server, requesting the current list of sights.
         /// </summary>
-        /// <param name="responseDelegate"></param>
-        /// <param name="failDelegate"></param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
         public void GetSightsList(
             EventDelegates.HTTPResponseDelegate responseDelegate,
             EventDelegates.HTTPFailDelegate failDelegate)
@@ -99,15 +106,17 @@ namespace GeoSight
         }
 
         /// <summary>
-        /// Send a message to the web server, requesting the register a new user.
+        /// Send a message to the web server, requesting to register a new user.
         /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="emailAddress"></param>
-        /// <param name="password"></param>
-        /// <param name="passwordConfirm"></param>
-        /// <param name="responseDelegate"></param>
-        /// <param name="failDelegate"></param>
+        /// <param name="firstName">The user's first name.</param>
+        /// <param name="lastName">The user's last name.</param>
+        /// <param name="emailAddress">The user's email address.</param>
+        /// <param name="password">The user's password.</param>
+        /// <param name="passwordConfirm">The user's password again.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
         public void Register(
             string firstName,
             string lastName,
@@ -117,8 +126,8 @@ namespace GeoSight
             EventDelegates.HTTPResponseDelegate responseDelegate,
             EventDelegates.HTTPFailDelegate failDelegate)
         {
-            // Build a dictionary which contains the first name, last name,
-            // email address and password.
+            // Build a dictionary which contains the user's first name,
+            // last name, email address, and password.
             // This dictionary will be used to create the POST variables.
             Dictionary<String, String> vars = new Dictionary<String, String>();
             vars.Add("user[first_name]", firstName);
@@ -138,10 +147,12 @@ namespace GeoSight
         /// <summary>
         /// Send a message to the web server, uploading a new picture.
         /// </summary>
-        /// <param name="userID"></param>
-        /// <param name="imageBytes"></param>
-        /// <param name="responseDelegate"></param>
-        /// <param name="failDelegate"></param>
+        /// <param name="userID">The user's ID.</param>
+        /// <param name="imageBytes">The picture to be uploaded as a byte array.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
         public void UploadPhoto(
             int userID,
             byte[] imageBytes,
@@ -173,17 +184,23 @@ namespace GeoSight
         /// <summary>
         /// Send a message to Amazon S3, requesting a picture.
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="responseDelegate"></param>
-        /// <param name="failDelegate"></param>
+        /// <param name="url">The picture URL.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
         public void DownloadPicture(
             String url,
             EventDelegates.HTTPResponseDelegate responseDelegate,
             EventDelegates.HTTPFailDelegate failDelegate)
         {
+            // Remove the "https://" from the beginning of the string.
+            if (url.StartsWith("https://"))
+                url = url.Substring(9);
+
             this.webClient.SendRequest(
                 false,
-                url.Substring(9), // remove the "https://" from the beginning of the string
+                url.Substring(9),
                 new Dictionary<String, String>(),
                 responseDelegate,
                 failDelegate);
