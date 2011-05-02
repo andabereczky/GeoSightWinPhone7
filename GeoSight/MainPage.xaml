@@ -29,11 +29,11 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBlock HorizontalAlignment="Right" Margin="6,6,6,0" Name="LoginMessageTextBlock" Text="Not logged in." VerticalAlignment="Top" TextAlignment="Right" />
-            <Button Content="Login" HorizontalAlignment="Left" Margin="6,40,6,0" Name="btn_LoginButton" VerticalAlignment="Top" Click="LoginButton_Click" FontSize="48" />
-            <TextBlock HorizontalAlignment="Left" Margin="184,71,0,0" Name="textBlock1" Text="or" VerticalAlignment="Top" FontSize="36" />
-            <Button Content="Register" HorizontalAlignment="Right" Margin="6,40,6,0" Name="btn_RegisterButton" VerticalAlignment="Top" Click="RegisterButton_Click" FontSize="48" />
-            <Button Content="Pick a Sight" HorizontalAlignment="Center" Margin="0,148,0,0" Name="btn_PickASightButton" VerticalAlignment="Top" Click="PickASightButton_Click" FontSize="48" />
-            <Button Content="Take a Photo" HorizontalAlignment="Center" Margin="0,256,0,0" Name="btn_TakePhotoButton" VerticalAlignment="Top" Click="TakePhotoButton_Click" FontSize="48" />
+            <Button Content="Login" HorizontalAlignment="Left" Margin="6,40,6,0" Name="LoginButton" VerticalAlignment="Top" Click="ShowLoginPage" FontSize="48" />
+            <TextBlock HorizontalAlignment="Left" Margin="184,71,0,0" Name="OrTextBlock" Text="or" VerticalAlignment="Top" FontSize="36" />
+            <Button Content="Register" HorizontalAlignment="Right" Margin="6,40,6,0" Name="RegisterButton" VerticalAlignment="Top" Click="ShowRegisterPage" FontSize="48" />
+            <Button Content="Pick a Sight" HorizontalAlignment="Center" Margin="0,148,0,0" Name="PickASightButton" VerticalAlignment="Top" Click="ShowPickASightPage" FontSize="48" />
+            <Button Content="Take a Photo" HorizontalAlignment="Center" Margin="0,256,0,0" Name="TakePhotoButton" VerticalAlignment="Top" Click="ValidateTakePhotoInput" FontSize="48" />
         </Grid>
     </Grid>
 

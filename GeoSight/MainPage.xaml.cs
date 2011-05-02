@@ -24,16 +24,35 @@ namespace GeoSight
         /// </summary>
         public MainPage()
         {
+            // Initialize the page
             InitializeComponent();
 
             // Initialize the camera task
             takeAPhotoTask = new CameraCaptureTask();
-            takeAPhotoTask.Completed += new EventHandler<PhotoResult>(TakeAPhotoTask_Completed);
+            takeAPhotoTask.Completed += new EventHandler<PhotoResult>(TookAPhoto);
 
             // Initialize the GPS location
             new GPSLocation();
         }
 
+        /// <summary>
+        /// Converts a bitmap to a byte array.
+        /// </summary>
+        /// <param name="bmp">A bitmap.</param>
+        /// <returns>A byte array.</returns>
+        private static byte[] ToByteArray(WriteableBitmap bmp)
+        {
+            int[] p = bmp.Pixels;
+            int len = p.Length * 4;
+            byte[] result = new byte[len];
+            Buffer.BlockCopy(p, 0, result, 0, len);
+            return result;
+        }
+
+        /// <summary>
+        /// Called when a page becomes the active page in a frame.
+        /// </summary>
+        /// <param name="eventArgs">The event arguments.</param>
         protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
         {
             // Check if we're logged in.
@@ -47,55 +66,43 @@ namespace GeoSight
             }
         }
 
-        /*
-        private void DownloadSelectedSightPicture()
+        /// <summary>
+        /// Called when the "Login" button is clicked.
+        /// </summary>
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ShowLoginPage(object sender, RoutedEventArgs eventArgs)
         {
-            App.ServerConnection.DownloadPicture(
-                App.SelectedSight.ThumbnailURL,
-                new EventDelegates.HTTPResponseDelegate(ProcessDownloadRequest),
-                new EventDelegates.HTTPFailDelegate(FailDownloadRequest));
-        }
-        
-        private void ProcessDownloadRequest(Stream responseStream)
-        {
-            Debug.WriteLine("Photo download succeeded!");
-
-            // Read image bytes from HTTP response.
-            byte[] contents;
-            using (BinaryReader bReader = new BinaryReader(responseStream))
-            {
-                contents = bReader.ReadBytes((int)responseStream.Length);
-            }
-
-            Deployment.Current.Dispatcher.BeginInvoke(
-                new Action(() =>
-                {
-                    // Save image to isolated storage.
-                    String tempJPEG = "TempJPEG";
-                    var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-                    if (myStore.FileExists(tempJPEG))
-                    {
-                        myStore.DeleteFile(tempJPEG);
-                    }
-                    IsolatedStorageFileStream stream = myStore.CreateFile(tempJPEG);
-                    stream.Write(contents, 0, contents.Length);
-                    stream.Close();
-
-                    // Display image.
-                    stream = new IsolatedStorageFileStream(tempJPEG, FileMode.Open, myStore);
-                    BitmapImage image = new BitmapImage();
-                    image.SetSource(stream);
-                    image1.Source = image;
-                }));
+            this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
         }
 
-        private void FailDownloadRequest(String message)
+        /// <summary>
+        /// Called when the "Register" button is clicked.
+        /// </summary>
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ShowRegisterPage(object sender, RoutedEventArgs eventArgs)
         {
-            Debug.WriteLine("Photo download failed:\n" + message);
+            this.NavigationService.Navigate(new Uri("/RegisterPage.xaml", UriKind.Relative));
         }
-        */
 
-        private void TakePhotoButton_Click(object sender, RoutedEventArgs eventArgs)
+        /// <summary>
+        /// Called when the "Pick a Sight" button is clicked.
+        /// </summary>
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ShowPickASightPage(object sender, RoutedEventArgs eventArgs)
+        {
+            App.SelectedSight = null;
+            this.NavigationService.Navigate(new Uri("/PickSightPage.xaml", UriKind.Relative));
+        }
+
+        /// <summary>
+        /// Called when the "Take a Photo" button is clicked.
+        /// </summary>
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ValidateTakePhotoInput(object sender, RoutedEventArgs eventArgs)
         {
             // Make sure the user is logged in.
             if (App.LoginFirstName == String.Empty)
@@ -125,9 +132,9 @@ namespace GeoSight
         /// Event handler for retrieving the JPEG photo stream.
         /// Also to for decoding JPEG stream into a writeable bitmap and displaying.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        void TakeAPhotoTask_Completed(object sender, PhotoResult eventArgs)
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void TookAPhoto(object sender, PhotoResult eventArgs)
         {
 
             if (eventArgs.TaskResult == TaskResult.OK && eventArgs.ChosenPhoto != null)
@@ -140,8 +147,14 @@ namespace GeoSight
             }
         }
 
+        /// <summary>
+        /// Save the photo that was taken to disk.
+        /// </summary>
+        /// <param name="imageSource">The stream containing the photo that was taken.</param>
+        /// <returns>A Media Library picture object of the saved photo.</returns>
         private Picture SaveCapturedImage(Stream imageSource)
         {
+            // Local variables.
             Stream stream;
             bool useFile = true;
 
@@ -150,7 +163,6 @@ namespace GeoSight
 
             if (useFile)
             {
-
                 // Create a filename for JPEG file in isolated storage.
                 String tempJPEG = "TempJPEG";
 
@@ -183,31 +195,11 @@ namespace GeoSight
             return pic;
         }
 
-        private static byte[] ToByteArray(WriteableBitmap bmp) {
-            int[] p = bmp.Pixels;
-            int len = p.Length * 4;
-            byte[] result = new byte[len];
-            Buffer.BlockCopy(p, 0, result, 0, len);
-            return result;
-        }
-
-        private void RegisterButton_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            this.NavigationService.Navigate(new Uri("/RegisterPage.xaml", UriKind.Relative));
-        }
-
-        private void LoginButton_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
-        }
-
-        private void PickASightButton_Click(object sender, RoutedEventArgs eventArgs)
-        {
-            App.SelectedSight = null;
-            this.NavigationService.Navigate(new Uri("/PickSightPage.xaml", UriKind.Relative));
-        }
-
-        private void ProcessUploadRequest(Stream responseStream)
+        /// <summary>
+        /// Called when the upload HTTP request to the server was successful.
+        /// </summary>
+        /// <param name="responseStream">The HTTP response stream.</param>
+        private void UploadSucceeded(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
             string line;
@@ -219,11 +211,20 @@ namespace GeoSight
             reader.Close();
         }
 
-        private void FailUploadRequest(String message)
+        /// <summary>
+        /// Called when the upload HTTP request to the server failed.
+        /// </summary>
+        /// <param name="message">A message that contains the reason
+        /// for the failure.</param>
+        private void UploadFailed(String message)
         {
             Debug.WriteLine("Upload failed:\n" + message);
         }
 
+        /// <summary>
+        /// Uploads the given picture to the server.
+        /// </summary>
+        /// <param name="picture">A Media Library picture.</param>
         private void UploadPhoto(Picture picture)
         {
             // Load the photo taken with the camera into memory.
@@ -238,8 +239,8 @@ namespace GeoSight
             App.ServerConnection.UploadPhoto(
                 (int) App.LoginUserID,
                 imageBytes,
-                new EventDelegates.HTTPResponseDelegate(ProcessUploadRequest),
-                new EventDelegates.HTTPFailDelegate(FailUploadRequest));
+                new EventDelegates.HTTPResponseDelegate(UploadSucceeded),
+                new EventDelegates.HTTPFailDelegate(UploadFailed));
         }
     }
 }
