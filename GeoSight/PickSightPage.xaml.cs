@@ -35,7 +35,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="sender">The notifying object.</param>
         /// <param name="eventArgs">The event arguments.</param>
-        private void ShowPickSightFromListPage(object sender, RoutedEventArgs e)
+        private void ShowPickSightFromListPage(object sender, RoutedEventArgs eventArgs)
         {
             this.NavigationService.Navigate(new Uri("/PickSightListPage.xaml", UriKind.Relative));
         }
@@ -45,7 +45,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="sender">The notifying object.</param>
         /// <param name="eventArgs">The event arguments.</param>
-        private void ShowPickSightFromMapPage(object sender, RoutedEventArgs e)
+        private void ShowPickSightFromMapPage(object sender, RoutedEventArgs eventArgs)
         {
             this.NavigationService.Navigate(new Uri("/PickSightMapPage.xaml", UriKind.Relative));
         }
