@@ -31,11 +31,15 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize members variables
-            responseDelegate = new EventDelegates.HTTPResponseDelegate(ProcessSightsListRequest);
-            failDelegate = new EventDelegates.HTTPFailDelegate(FailSightsListRequest);
+            responseDelegate = new EventDelegates.HTTPResponseDelegate(GettingSightsListSucceeded);
+            failDelegate = new EventDelegates.HTTPFailDelegate(GettingSightsListFailed);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// <summary>
+        /// Called when a page becomes the active page in a frame.
+        /// </summary>
+        /// <param name="eventArgs">The event arguments.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
         {
             // Ask the user to wait until the sights list has been downloaded.
             NotificationTextBlock.Text = "Please wait...";
@@ -44,7 +48,11 @@ namespace GeoSight
             GetSightsList();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs args)
+        /// <summary>
+        /// Called when a page is no longer the active page in a frame.
+        /// </summary>
+        /// <param name="eventArgs">The event arguments.</param>
+        protected override void OnNavigatedFrom(NavigationEventArgs eventArgs)
         {
             // Make sure no item is highlighted in the list of sights.
             SightsList.SelectedIndex = -1;
@@ -54,7 +62,9 @@ namespace GeoSight
         /// <summary>
         /// Event handler called when user selects a sight.
         /// </summary>
-        private void SightsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void NewSightSelected(object sender, SelectionChangedEventArgs eventArgs)
         {
             // If an item was selected...
             if (SightsList.SelectedIndex != -1)
@@ -87,7 +97,7 @@ namespace GeoSight
         /// sights was successful.
         /// </summary>
         /// <param name="responseStream">The HTTP response stream.</param>
-        private void ProcessSightsListRequest(Stream responseStream)
+        private void GettingSightsListSucceeded(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
 
@@ -97,9 +107,8 @@ namespace GeoSight
                 JArray jsonSights = JArray.Parse(reader.ReadToEnd());
 
                 // Created a collection of sights sorted by the distance to the current location
-                Sights sights = new Sights(jsonSights);
-                ObservableCollection<Sight> sortedSights =
-                    Sights.GetSortedSights(sights, App.CurrentLatitude, App.CurrentLongitude);
+                Sights sights = new Sights(jsonSights, App.CurrentLatitude, App.CurrentLongitude);
+                ObservableCollection<Sight> sortedSights = Sights.GetSortedSights(sights);
 
                 // If the HTTP response parsed as JSON, we got the list of sights.
                 Deployment.Current.Dispatcher.BeginInvoke(
@@ -130,7 +139,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="message">A message that contains the reason
         /// for the failure.</param>
-        private void FailSightsListRequest(String message)
+        private void GettingSightsListFailed(String message)
         {
             NotificationTextBlock.Dispatcher.BeginInvoke(
                 new Action(() => { NotificationTextBlock.Text = "Retrieving Sights Failed: " + message + "."; }));

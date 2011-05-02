@@ -24,11 +24,13 @@ namespace GeoSight
         /// </summary>
         /// <param name="jsonSights">Information about several sights in JSON
         /// format.</param>
-        public Sights(JArray jsonSights)
+        /// <param name="currentLatitude">The current latitude.</param>
+        /// <param name="currentLongitude">the current longitude.</param>
+        public Sights(JArray jsonSights, double currentLatitude, double currentLongitude)
         {
             for (int i = 0; i <= jsonSights.Count - 1; i++)
             {
-                this.Add(new Sight(jsonSights[i]));
+                this.Add(new Sight(jsonSights[i], currentLatitude, currentLongitude));
             }
         }
 
@@ -37,19 +39,14 @@ namespace GeoSight
         /// current location.
         /// </summary>
         /// <param name="sights">The collection of sights</param>
-        /// <param name="currentLatitude">The current latitude</param>
-        /// <param name="currentLongitude">The current longitude</param>
         /// <returns>The sorted collection of sights</returns>
-        public static ObservableCollection<Sight> GetSortedSights(
-            Sights sights, double currentLatitude, double currentLongitude)
+        public static ObservableCollection<Sight> GetSortedSights(Sights sights)
         {
             // A key selector that creates a key from the distance between the
             // current location and the location of the given sight
             Func<Sight, double> distanceToCurrentLocation = delegate(Sight sight)
             {
-                return GPSLocation.CalculateDistance(
-                    currentLatitude, currentLongitude,
-                    sight.Latitude, sight.Longitude);
+                return sight.Distance;
             };
 
             // Sort the given sights according to their distance to the

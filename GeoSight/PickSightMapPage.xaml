@@ -30,10 +30,10 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBlock HorizontalAlignment="Left" Margin="6,0,0,0" Name="NotificationTextBlock" Text="" VerticalAlignment="Top" Foreground="Red" />
             <my:Map Height="500" HorizontalAlignment="Left" Name="sightsMap" VerticalAlignment="Top" Width="450" Margin="0,40,0,0" Visibility="Collapsed" CredentialsProvider="Av3YezthOiiTv0sNLLNQNJnb0MNjFb7yexZIKnutZuYL33vDg_SCC0seVMpoPr7R" ZoomBarVisibility="Collapsed" LogoVisibility="Collapsed" CopyrightVisibility="Collapsed" />
-            <Button Content="+" Height="75" HorizontalAlignment="Left" Margin="-12,545,0,0" Name="btn_ZoomInButton" VerticalAlignment="Top" Width="77" Click="btn_ZoomInButton_Click" Visibility="Collapsed" />
-            <Button Content="-" Height="75" HorizontalAlignment="Left" Margin="54,545,0,0" Name="btn_ZoomOutButton" VerticalAlignment="Top" Width="80" Click="btn_ZoomOutButton_Click" Visibility="Collapsed" />
-            <Button Content="Road View" Height="75" HorizontalAlignment="Left" Margin="127,545,0,0" Name="btn_ChangeToRoadViewButton" VerticalAlignment="Top" Width="179" Click="btn_ChangeToRoadViewButton_Click" Visibility="Collapsed" />
-            <Button Content="Aerial View" Height="72" HorizontalAlignment="Left" Margin="290,548,0,0" Name="btn_ChangeToAerialViewButton" VerticalAlignment="Top" Width="178" Click="btn_ChangeToAerialViewButton_Click" Visibility="Collapsed" />
+            <Button Content="+" Height="75" HorizontalAlignment="Left" Margin="-12,545,0,0" Name="ZoomInButton" VerticalAlignment="Top" Width="77" Click="ZoomIn" Visibility="Collapsed" />
+            <Button Content="-" Height="75" HorizontalAlignment="Left" Margin="54,545,0,0" Name="ZoomOutButton" VerticalAlignment="Top" Width="80" Click="ZoomOut" Visibility="Collapsed" />
+            <Button Content="Road View" Height="75" HorizontalAlignment="Left" Margin="127,545,0,0" Name="ChangeToRoadViewButton" VerticalAlignment="Top" Width="179" Click="ChangeToRoadView" Visibility="Collapsed" />
+            <Button Content="Aerial View" Height="75" HorizontalAlignment="Left" Margin="290,545,0,0" Name="ChangeToAerialViewButton" VerticalAlignment="Top" Width="178" Click="ChangeToAerialView" Visibility="Collapsed" />
         </Grid>
     </Grid>
  

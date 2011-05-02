@@ -52,6 +52,16 @@ namespace GeoSight
         /// </summary>
         private string thumbnailURL;
 
+        /// <summary>
+        /// The distance to the current location in meters.
+        /// </summary>
+        private double distance;
+
+        /// <summary>
+        /// The distance in a nice format.
+        /// </summary>
+        private string formattedDistance;
+
         #endregion
 
         #region Private methods
@@ -76,7 +86,9 @@ namespace GeoSight
         /// Constructor.
         /// </summary>
         /// <param name="jsonSight">Information about a sight in JSON format.</param>
-        public Sight(JToken jsonSight)
+        /// <param name="currentLatitude">The current latitude.</param>
+        /// <param name="currentLongitude">the current longitude.</param>
+        public Sight(JToken jsonSight, double currentLatitude, double currentLongitude)
         {
             ID = Convert.ToInt32(jsonSight["id"].ToString());
             Name = jsonSight["name"].ToString();
@@ -84,6 +96,10 @@ namespace GeoSight
             Latitude = Convert.ToDouble(jsonSight["latitude"].ToString());
             Longitude = Convert.ToDouble(jsonSight["longitude"].ToString());
             ThumbnailURL = jsonSight["thumbnail"].ToString();
+            Distance = GPSLocation.CalculateDistance(
+                currentLatitude, currentLongitude, Latitude, Longitude);
+            FormattedDistance = String.Format("{0:0.0} km", Distance / 1000.0);
+
         }
 
         #endregion
@@ -191,6 +207,38 @@ namespace GeoSight
                 {
                     thumbnailURL = value;
                     NotifyPropertyChanged("ThumbnailURL");
+                }
+            }
+        }
+
+        public double Distance
+        {
+            get
+            {
+                return distance;
+            }
+            set
+            {
+                if (value != distance)
+                {
+                    distance = value;
+                    NotifyPropertyChanged("Distance");
+                }
+            }
+        }
+
+        public string FormattedDistance
+        {
+            get
+            {
+                return formattedDistance;
+            }
+            set
+            {
+                if (value != formattedDistance)
+                {
+                    formattedDistance = value;
+                    NotifyPropertyChanged("FormattedDistance");
                 }
             }
         }

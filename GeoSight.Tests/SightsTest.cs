@@ -26,7 +26,7 @@ namespace GeoSight.Tests
             JArray jsonSights = JArray.Parse(reader.ReadToEnd());
 
             // Create sights
-            Sights sights = new Sights(jsonSights);
+            Sights sights = new Sights(jsonSights, 40.115627, -88.220987);
 
             // Check that the sights were created correctly
             Assert.AreEqual(2, sights.Count);
@@ -34,8 +34,7 @@ namespace GeoSight.Tests
             Assert.AreEqual("\"Das Cafe\"", sights[1].Name);
 
             // Check that the sights are sorted correctly
-            ObservableCollection<Sight> sortedSights =
-                Sights.GetSortedSights(sights, 40.115627, -88.220987);
+            ObservableCollection<Sight> sortedSights = Sights.GetSortedSights(sights);
             Assert.AreEqual(sights.Count, sortedSights.Count);
             Assert.AreEqual("\"Das Cafe\"", sortedSights[0].Name);
             Assert.AreEqual("\"well\"", sortedSights[1].Name);
