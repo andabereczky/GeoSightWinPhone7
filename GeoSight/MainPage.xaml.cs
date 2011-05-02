@@ -156,37 +156,28 @@ namespace GeoSight
         {
             // Local variables.
             Stream stream;
-            bool useFile = true;
 
             //Take JPEG stream and decode into a WriteableBitmap object.
             WriteableBitmap wb = PictureDecoder.DecodeJpeg(imageSource);
 
-            if (useFile)
+            // Create a filename for JPEG file in isolated storage.
+            String tempJPEG = "TempJPEG";
+
+            // Create virtual store and file stream. Check for duplicate tempJPEG files.
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(tempJPEG))
             {
-                // Create a filename for JPEG file in isolated storage.
-                String tempJPEG = "TempJPEG";
-
-                // Create virtual store and file stream. Check for duplicate tempJPEG files.
-                var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-                if (myStore.FileExists(tempJPEG))
-                {
-                    myStore.DeleteFile(tempJPEG);
-                }
-
-                IsolatedStorageFileStream myFileStream = myStore.CreateFile(tempJPEG);
-
-                // Encode WriteableBitmap object to a JPEG stream.
-                System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, myFileStream, wb.PixelWidth, wb.PixelHeight, 0, 85);
-                myFileStream.Close();
-
-                // Create a new stream from isolated storage.
-                stream = myStore.OpenFile(tempJPEG, FileMode.Open, FileAccess.Read);
-            } else {
-
-                // Create a byte stream from the most-recently captured bitmap.
-                byte[] bytes = ToByteArray(wb);
-                stream = new MemoryStream(bytes);
+                myStore.DeleteFile(tempJPEG);
             }
+
+            IsolatedStorageFileStream myFileStream = myStore.CreateFile(tempJPEG);
+
+            // Encode WriteableBitmap object to a JPEG stream.
+            System.Windows.Media.Imaging.Extensions.SaveJpeg(wb, myFileStream, wb.PixelWidth, wb.PixelHeight, 0, 85);
+            myFileStream.Close();
+
+            // Create a new stream from isolated storage.
+            stream = myStore.OpenFile(tempJPEG, FileMode.Open, FileAccess.Read);
 
             // Save the JPEG file to the media library on Windows Phone.
             MediaLibrary library = new MediaLibrary();
