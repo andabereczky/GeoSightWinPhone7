@@ -17,16 +17,49 @@ namespace GeoSight
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        // Global variables used throughout the application.
-        // "The road to programming hell is paved with global variables."
+        /// <summary>
+        /// The global object used to connect to the server.
+        /// </summary>
         public static ServerConnection ServerConnection = new ServerConnection();
+
+        /// <summary>
+        /// The file name used to save photos to disk.
+        /// </summary>
         public static String ImageFilename = "GeoSightPhoto.jpg";
+
+        /// <summary>
+        /// The cookies used for all web requests.
+        /// </summary>
         public static CookieContainer Cookies = new CookieContainer();
+
+        /// <summary>
+        /// The user ID of the user that's logged in.
+        /// </summary>
         public static UInt32 LoginUserID = 0;
+
+        /// <summary>
+        /// The first name of the user that's logged in.
+        /// </summary>
         public static String LoginFirstName = String.Empty;
+
+        /// <summary>
+        /// The sight selected by the user.
+        /// </summary>
         public static Sight SelectedSight = null;
+
+        /// <summary>
+        /// The latitude of the user's current position.
+        /// </summary>
         public static Double CurrentLatitude = 0.0;
+
+        /// <summary>
+        /// The longitude of the user's current position.
+        /// </summary>
         public static Double CurrentLongitude = 0.0;
+
+        /// <summary>
+        /// True if the user has arrived at the selected sight.
+        /// </summary>
         public static Boolean InDestination = false;
 
         /// <summary>
