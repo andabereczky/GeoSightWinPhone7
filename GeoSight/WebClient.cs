@@ -37,134 +37,7 @@ namespace GeoSight
 
         #endregion
 
-        #region Constructor
-
-        public WebClient(String protocol)
-        {
-            this.protocol = protocol;
-            this.boundary = "------WyDcB6n100wunb48cOn5OeR82ysYaCrm"; // doesn't have to be randomly generated
-        }
-
-        #endregion
-
-        #region Public static functions
-
-        /// <summary>
-        /// Converts a string to a byte array.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <returns>A byte array.</returns>
-        public static byte[] StrToByteArray(string str)
-        {
-            UTF8Encoding encoding = new UTF8Encoding();
-            return encoding.GetBytes(str);
-        }
-
-        /// <summary>
-        /// Converts a byte array to a string.
-        /// </summary>
-        /// <param name="bytes">The byte array.</param>
-        /// <returns>A string.</returns>
-        public static string ByteArrayToStr(byte[] bytes)
-        {
-            UTF8Encoding encoding = new UTF8Encoding();
-            return encoding.GetString(bytes, 0, bytes.Length);
-        }
-
-        #endregion
-
-        #region Public members functions
-
-        /// <summary>
-        /// Sends an HTTP request to the specified URL.
-        /// </summary>
-        /// <param name="isPOST">True if this is a POST request,
-        /// false if it's a GET request.</param>
-        /// <param name="url">The URL to which to send the request.</param>
-        /// <param name="vars">The POST or GET variables.</param>
-        /// <param name="responseDelegate">The delegate that should be
-        /// called if the client receives a response.</param>
-        /// <param name="failDelegate">The delegate that should be
-        /// called if the client fails to receive a response.</param>
-        public void SendRequest(
-            bool isPOST,
-            String url,
-            Dictionary<String, String> vars,
-            EventDelegates.HTTPResponseDelegate responseDelegate,
-            EventDelegates.HTTPFailDelegate failDelegate)
-        {
-            // Get the variable string.
-            String varString = ConstructVarString(vars);
-
-            // Create a binary byte array for the body.
-            byte[] body = StrToByteArray(varString);
-
-            // Create the full correct URI.
-            String uri = ConstructURI(url, isPOST, varString);
-
-            // Determine the method and content type.
-            String method, contentType;
-            if (isPOST)
-            {
-                method = "POST";
-                contentType = "application/x-www-form-urlencoded";
-            }
-            else
-            {
-                method = "GET";
-                contentType = String.Empty;
-            }
-
-            // Start the asynchronous call.
-            StartAsyncCall(
-                uri,
-                method,
-                contentType,
-                body,
-                responseDelegate,
-                failDelegate);
-        }
-
-        /// <summary>
-        /// Uploads a file using a POST request to the specified url.
-        /// </summary>
-        /// <param name="url">The URL to which to send the request.</param>
-        /// <param name="fileName">The name of the file to upload.</param>
-        /// <param name="varName">The variable name for the file to upload.</param>
-        /// <param name="fileContents">The contents of the file.</param>
-        /// <param name="vars">Any other POST variables.</param>
-        /// <param name="responseDelegate">The delegate that should be
-        /// called if the client receives a response.</param>
-        /// <param name="failDelegate">The delegate that should be
-        /// called if the client fails to receive a response.</param>
-        public void UploadFile(
-            string url,
-            string fileName,
-            string varName,
-            byte[] fileContents,
-            Dictionary<string, string> vars,
-            EventDelegates.HTTPResponseDelegate responseDelegate,
-            EventDelegates.HTTPFailDelegate failDelegate)
-        {
-            // Create the body of the multi-part POST request.
-            byte[] body = ConstructMultiPartBody(fileName, varName, fileContents, vars);
-
-            // Create the full correct URI.
-            String uri = ConstructURI(url, true, String.Empty);
-
-            // Start the asynchronous call.
-            StartAsyncCall(
-                uri,
-                "POST",
-                "multipart/form-data;boundary=" + boundary,
-                body,
-                responseDelegate,
-                failDelegate);
-        }
-
-        #endregion
-
-        #region Private member functions
+        #region Private methods
 
         /// <summary>
         /// From the given dictionary, create a variable string of the form
@@ -407,6 +280,133 @@ namespace GeoSight
             {
                 requestState.FailDelegate(e.Message);
             }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public WebClient(String protocol)
+        {
+            this.protocol = protocol;
+            this.boundary = "------WyDcB6n100wunb48cOn5OeR82ysYaCrm"; // doesn't have to be randomly generated
+        }
+
+        #endregion
+
+        #region Public static methods
+
+        /// <summary>
+        /// Converts a string to a byte array.
+        /// </summary>
+        /// <param name="str">The string.</param>
+        /// <returns>A byte array.</returns>
+        public static byte[] StrToByteArray(string str)
+        {
+            UTF8Encoding encoding = new UTF8Encoding();
+            return encoding.GetBytes(str);
+        }
+
+        /// <summary>
+        /// Converts a byte array to a string.
+        /// </summary>
+        /// <param name="bytes">The byte array.</param>
+        /// <returns>A string.</returns>
+        public static string ByteArrayToStr(byte[] bytes)
+        {
+            UTF8Encoding encoding = new UTF8Encoding();
+            return encoding.GetString(bytes, 0, bytes.Length);
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Sends an HTTP request to the specified URL.
+        /// </summary>
+        /// <param name="isPOST">True if this is a POST request,
+        /// false if it's a GET request.</param>
+        /// <param name="url">The URL to which to send the request.</param>
+        /// <param name="vars">The POST or GET variables.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
+        public void SendRequest(
+            bool isPOST,
+            String url,
+            Dictionary<String, String> vars,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            // Get the variable string.
+            String varString = ConstructVarString(vars);
+
+            // Create a binary byte array for the body.
+            byte[] body = StrToByteArray(varString);
+
+            // Create the full correct URI.
+            String uri = ConstructURI(url, isPOST, varString);
+
+            // Determine the method and content type.
+            String method, contentType;
+            if (isPOST)
+            {
+                method = "POST";
+                contentType = "application/x-www-form-urlencoded";
+            }
+            else
+            {
+                method = "GET";
+                contentType = String.Empty;
+            }
+
+            // Start the asynchronous call.
+            StartAsyncCall(
+                uri,
+                method,
+                contentType,
+                body,
+                responseDelegate,
+                failDelegate);
+        }
+
+        /// <summary>
+        /// Uploads a file using a POST request to the specified url.
+        /// </summary>
+        /// <param name="url">The URL to which to send the request.</param>
+        /// <param name="fileName">The name of the file to upload.</param>
+        /// <param name="varName">The variable name for the file to upload.</param>
+        /// <param name="fileContents">The contents of the file.</param>
+        /// <param name="vars">Any other POST variables.</param>
+        /// <param name="responseDelegate">The delegate that should be
+        /// called if the client receives a response.</param>
+        /// <param name="failDelegate">The delegate that should be
+        /// called if the client fails to receive a response.</param>
+        public void UploadFile(
+            string url,
+            string fileName,
+            string varName,
+            byte[] fileContents,
+            Dictionary<string, string> vars,
+            EventDelegates.HTTPResponseDelegate responseDelegate,
+            EventDelegates.HTTPFailDelegate failDelegate)
+        {
+            // Create the body of the multi-part POST request.
+            byte[] body = ConstructMultiPartBody(fileName, varName, fileContents, vars);
+
+            // Create the full correct URI.
+            String uri = ConstructURI(url, true, String.Empty);
+
+            // Start the asynchronous call.
+            StartAsyncCall(
+                uri,
+                "POST",
+                "multipart/form-data;boundary=" + boundary,
+                body,
+                responseDelegate,
+                failDelegate);
         }
 
         #endregion
