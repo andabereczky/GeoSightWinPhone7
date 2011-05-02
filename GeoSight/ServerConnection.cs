@@ -73,7 +73,7 @@ namespace GeoSight
             vars.Add("user_session[email]", emailAddress);
             vars.Add("user_session[password]", password);
 
-            this.webClient.SendReqest(
+            this.webClient.SendRequest(
                 true,
                 serverURL + loginURL,
                 vars,
@@ -90,7 +90,7 @@ namespace GeoSight
             EventDelegates.HTTPResponseDelegate responseDelegate,
             EventDelegates.HTTPFailDelegate failDelegate)
         {
-            this.webClient.SendReqest(
+            this.webClient.SendRequest(
                 false,
                 serverURL + sightsListURL,
                 new Dictionary<String, String>(),
@@ -127,7 +127,7 @@ namespace GeoSight
             vars.Add("user[password]", password);
             vars.Add("user[password_confirmation]", passwordConfirm);
 
-            this.webClient.SendReqest(
+            this.webClient.SendRequest(
                 true,
                 serverURL + registerURL,
                 vars,
@@ -181,7 +181,7 @@ namespace GeoSight
             EventDelegates.HTTPResponseDelegate responseDelegate,
             EventDelegates.HTTPFailDelegate failDelegate)
         {
-            this.webClient.SendReqest(
+            this.webClient.SendRequest(
                 false,
                 url.Substring(9), // remove the "https://" from the beginning of the string
                 new Dictionary<String, String>(),

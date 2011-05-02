@@ -12,7 +12,7 @@ namespace GeoSight.Tests
         [TestMethod]
         public void TestSendRequest()
         {
-            new WebClient("http").SendReqest(
+            new WebClient("http").SendRequest(
                 false,
                 "www.google.com",
                 new Dictionary<String, String>(),

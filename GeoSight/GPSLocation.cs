@@ -11,6 +11,8 @@ namespace GeoSight
     /// </summary>
     public class GPSLocation
     {
+        public static double p = 3960 * 1609.344;
+
         /// <summary>
         /// Watches changes in the current GPS location.
         /// </summary>
@@ -123,7 +125,6 @@ namespace GeoSight
             double latitude2,
             double longitude2)
         {
-            double p = 3960*1609.344;
             //θ
             double currentLongitudeAngle = longitude1;
             //φ
@@ -142,19 +143,31 @@ namespace GeoSight
             destinationLongitudeAngle = destinationLongitudeAngle * (2 * Math.PI)/360;
             destinationLatitudeAngle = destinationLatitudeAngle * (2 * Math.PI)/360;
 
-            
-            double arcLength = Math.Acos( Math.Sin(currentLongitudeAngle) * Math.Sin(destinationLongitudeAngle) * 
-                                    Math.Cos( currentLatitudeAngle - destinationLatitudeAngle) +
-                                       Math.Cos(currentLongitudeAngle) * Math.Cos(destinationLongitudeAngle));
-
-            double distance = arcLength * p;
-
-            Debug.WriteLine("dist:" + distance);
-
-            return distance;
+            return p * CalculateArcLength(
+                currentLatitudeAngle,
+                currentLongitudeAngle,
+                destinationLatitudeAngle,
+                destinationLongitudeAngle);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="latitudeAngle1"></param>
+        /// <param name="longitudeAngle1"></param>
+        /// <param name="latitudeAngle2"></param>
+        /// <param name="longitudeAngle2"></param>
+        /// <returns></returns>
+        public static double CalculateArcLength(
+            double latitudeAngle1,
+            double longitudeAngle1,
+            double latitudeAngle2,
+            double longitudeAngle2)
+        {
+            return Math.Acos(
+                Math.Sin(longitudeAngle1) * Math.Sin(longitudeAngle2) * Math.Cos(latitudeAngle1 - latitudeAngle2) +
+                Math.Cos(longitudeAngle1) * Math.Cos(longitudeAngle2));
+        }
 
         /// <summary>
         /// Called when the GPS status changes.
