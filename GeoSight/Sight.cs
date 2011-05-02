@@ -20,7 +20,7 @@ namespace GeoSight
     /// </summary>
     public class Sight : INotifyPropertyChanged
     {
-        #region Member variables
+        #region Private member variables
 
         /// <summary>
         /// The ID of the sight.
@@ -37,10 +37,6 @@ namespace GeoSight
         /// </summary>
         private double radius;
 
-        //private int userID;
-        //private DateTime createdAt;
-        //private DateTime updatedAt;
-
         /// <summary>
         /// The latitude of the sight.
         /// </summary>
@@ -56,11 +52,47 @@ namespace GeoSight
         /// </summary>
         private string thumbnailURL;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// An event handler called when a property changes.
+        /// </summary>
+        private event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
-        #region Accessors
+        #region Private methods
+
+        /// <summary>
+        /// Raise the PropertyChanged event and pass along the property that changed.
+        /// </summary>
+        private void NotifyPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="jsonSight">Information about a sight in JSON format.</param>
+        public Sight(JToken jsonSight)
+        {
+            ID = Convert.ToInt32(jsonSight["id"].ToString());
+            Name = jsonSight["name"].ToString();
+            Radius = Convert.ToDouble(jsonSight["radius"].ToString());
+            Latitude = Convert.ToDouble(jsonSight["latitude"].ToString());
+            Longitude = Convert.ToDouble(jsonSight["longitude"].ToString());
+            ThumbnailURL = jsonSight["thumbnail"].ToString();
+        }
+
+        #endregion
+
+        #region Public properties
 
         public int ID
         {
@@ -155,42 +187,6 @@ namespace GeoSight
                     thumbnailURL = value;
                     NotifyPropertyChanged("ThumbnailURL");
                 }
-            }
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="jsonSight">Information about a sight in JSON format.</param>
-        public Sight(JToken jsonSight)
-        {
-            ID = Convert.ToInt32(jsonSight["id"].ToString());
-            Name = jsonSight["name"].ToString();
-            Radius = Convert.ToDouble(jsonSight["radius"].ToString());
-            //yadda = jsonSight["created_at"];
-            //yadda = jsonSight["updated_at"];
-            //yadda = jsonSight["user_id"];
-            Latitude = Convert.ToDouble(jsonSight["latitude"].ToString());
-            Longitude = Convert.ToDouble(jsonSight["longitude"].ToString());
-            ThumbnailURL = jsonSight["thumbnail"].ToString();
-        }
-
-        #endregion
-
-        #region Private member functions
-
-        /// <summary>
-        /// Raise the PropertyChanged event and pass along the property that changed.
-        /// </summary>
-        private void NotifyPropertyChanged(string property)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
 
