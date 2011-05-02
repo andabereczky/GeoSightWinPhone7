@@ -52,11 +52,6 @@ namespace GeoSight
         /// </summary>
         private string thumbnailURL;
 
-        /// <summary>
-        /// An event handler called when a property changes.
-        /// </summary>
-        private event PropertyChangedEventHandler PropertyChanged;
-
         #endregion
 
         #region Private methods
@@ -64,7 +59,8 @@ namespace GeoSight
         /// <summary>
         /// Raise the PropertyChanged event and pass along the property that changed.
         /// </summary>
-        private void NotifyPropertyChanged(string property)
+        /// <param name="property">The name of the property that was changed.</param>
+        private void NotifyPropertyChanged(String property)
         {
             if (PropertyChanged != null)
             {
@@ -89,6 +85,15 @@ namespace GeoSight
             Longitude = Convert.ToDouble(jsonSight["longitude"].ToString());
             ThumbnailURL = jsonSight["thumbnail"].ToString();
         }
+
+        #endregion
+
+        #region Public member variables
+
+        /// <summary>
+        /// An event handler called when a property changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
