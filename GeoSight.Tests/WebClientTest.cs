@@ -18,6 +18,13 @@ namespace GeoSight.Tests
                 new Dictionary<String, String>(),
                 new EventDelegates.HTTPResponseDelegate(ProcessResponse),
                 new EventDelegates.HTTPFailDelegate(FailRequest));
+
+            new WebClient("http").SendRequest(
+                false,
+                "www.jdjhksd.com",
+                new Dictionary<String, String>(),
+                new EventDelegates.HTTPResponseDelegate(ProcessResponse2),
+                new EventDelegates.HTTPFailDelegate(FailRequest2));
         }
 
         private void ProcessResponse(Stream responseStream)
@@ -32,6 +39,16 @@ namespace GeoSight.Tests
         private void FailRequest(String message)
         {
             Assert.IsTrue(false);
+        }
+
+        private void ProcessResponse2(Stream responseStream)
+        {
+            Assert.IsTrue(false);
+        }
+
+        private void FailRequest2(String message)
+        {
+            Assert.IsTrue(true);
         }
     }
 }
