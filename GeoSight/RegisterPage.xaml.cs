@@ -29,15 +29,15 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize members variables
-            responseDelegate = new EventDelegates.HTTPResponseDelegate(ProcessRegisterRequest);
-            failDelegate = new EventDelegates.HTTPFailDelegate(FailRegisterRequest);
+            responseDelegate = new EventDelegates.HTTPResponseDelegate(RegisterSucceeded);
+            failDelegate = new EventDelegates.HTTPFailDelegate(RegisterFailed);
         }
 
         /// <summary>
         /// Called when the register HTTP request to the server was successful.
         /// </summary>
         /// <param name="responseStream">The HTTP response stream.</param>
-        private void ProcessRegisterRequest(Stream responseStream)
+        private void RegisterSucceeded(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
 
@@ -67,7 +67,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="message">A message that contains the reason
         /// for the failure.</param>
-        private void FailRegisterRequest(String message)
+        private void RegisterFailed(String message)
         {
             NotificationTextBlock.Dispatcher.BeginInvoke(
                 new Action(() => { NotificationTextBlock.Text = "Register Failed: " + message + "."; }));
@@ -76,9 +76,9 @@ namespace GeoSight
         /// <summary>
         /// Called when the "Register" button is clicked.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ValidateRegisterInput(object sender, RoutedEventArgs eventArgs)
         {
             // Check that the user entered their first name
             String firstName = FirstNameTextBox.Text;

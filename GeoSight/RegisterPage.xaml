@@ -39,7 +39,7 @@
             <PasswordBox HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="6,358,0,0"  Name="PasswordTextBox"          Password="" />
             <TextBlock   HorizontalAlignment="Left"    VerticalAlignment="Top" Margin="6,436,0,0"  Name="PasswordConfirmTextBlock" Text="Confirm password" />
             <PasswordBox HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="6,458,0,0"  Name="PasswordConfirmTextBox"   Password="" />
-            <Button Content="Register" HorizontalAlignment="Center" Margin="0,529,0,0" Name="RegisterButton" VerticalAlignment="Top" Click="RegisterButton_Click" />
+            <Button Content="Register" HorizontalAlignment="Center" Margin="0,529,0,0" Name="RegisterButton" VerticalAlignment="Top" Click="ValidateRegisterInput" />
         </Grid>
     </Grid>
  

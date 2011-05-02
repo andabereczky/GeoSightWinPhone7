@@ -30,11 +30,15 @@ namespace GeoSight
             InitializeComponent();
 
             // Initialize members variables
-            responseDelegate = new EventDelegates.HTTPResponseDelegate(ProcessLoginRequest);
-            failDelegate = new EventDelegates.HTTPFailDelegate(FailLoginRequest);
+            responseDelegate = new EventDelegates.HTTPResponseDelegate(LoginSucceeded);
+            failDelegate = new EventDelegates.HTTPFailDelegate(LoginFailed);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// <summary>
+        /// Called when a page becomes the active page in a frame.
+        /// </summary>
+        /// <param name="eventArgs">The event arguments.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
         {
             if (App.LoginFirstName != String.Empty)
             {
@@ -50,7 +54,7 @@ namespace GeoSight
         /// Called when the login HTTP request to the server was successful.
         /// </summary>
         /// <param name="responseStream">The HTTP response stream.</param>
-        private void ProcessLoginRequest(Stream responseStream)
+        private void LoginSucceeded(Stream responseStream)
         {
             StreamReader reader = new StreamReader(responseStream);
 
@@ -85,7 +89,7 @@ namespace GeoSight
         /// </summary>
         /// <param name="message">A message that contains the reason
         /// for the failure.</param>
-        private void FailLoginRequest(String message)
+        private void LoginFailed(String message)
         {
             NotificationTextBlock.Dispatcher.BeginInvoke(
                 new Action(() => { NotificationTextBlock.Text = "Login Failed: " + message + "."; }));
@@ -94,9 +98,9 @@ namespace GeoSight
         /// <summary>
         /// Called when the "Login" button is clicked.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        /// <param name="sender">The notifying object.</param>
+        /// <param name="eventArgs">The event arguments.</param>
+        private void ValidateLoginInput(object sender, RoutedEventArgs eventArgs)
         {
             // Check that the user entered an email address
             String emailAddress = EmailAddressTextBox.Text;

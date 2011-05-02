@@ -33,7 +33,7 @@
             <TextBox HorizontalAlignment="Left" Margin="6,58,6,0" Name="EmailAddressTextBox" Text="" VerticalAlignment="Top" Width="450" />
             <TextBlock HorizontalAlignment="Left" Margin="6,136,0,0" Name="PasswordTextBlock" Text="Password" VerticalAlignment="Top" />
             <PasswordBox HorizontalAlignment="Left" Margin="6,158,6,0" Name="PasswordTextBox" VerticalAlignment="Top" Width="450" Password="" />
-            <Button Content="Login" HorizontalAlignment="Center" Margin="6,236,6,0" Name="LoginButton" VerticalAlignment="Top" Click="LoginButton_Click" />
+            <Button Content="Login" HorizontalAlignment="Center" Margin="6,236,6,0" Name="LoginButton" VerticalAlignment="Top" Click="ValidateLoginInput" />
         </Grid>
     </Grid>
 

@@ -34,7 +34,7 @@ namespace GeoSight
             new GPSLocation();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs eventArgs)
         {
             // Check if we're logged in.
             if (App.LoginFirstName != String.Empty)
@@ -95,7 +95,7 @@ namespace GeoSight
         }
         */
 
-        private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
+        private void TakePhotoButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             // Make sure the user is logged in.
             if (App.LoginFirstName == String.Empty)
@@ -126,14 +126,14 @@ namespace GeoSight
         /// Also to for decoding JPEG stream into a writeable bitmap and displaying.
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void TakeAPhotoTask_Completed(object sender, PhotoResult e)
+        /// <param name="eventArgs"></param>
+        void TakeAPhotoTask_Completed(object sender, PhotoResult eventArgs)
         {
 
-            if (e.TaskResult == TaskResult.OK && e.ChosenPhoto != null)
+            if (eventArgs.TaskResult == TaskResult.OK && eventArgs.ChosenPhoto != null)
             {
                 // Save the captured image to disk.
-                Picture pic = SaveCapturedImage(e.ChosenPhoto);
+                Picture pic = SaveCapturedImage(eventArgs.ChosenPhoto);
 
                 // Upload the image to the server.
                 UploadPhoto(pic);
@@ -191,17 +191,17 @@ namespace GeoSight
             return result;
         }
 
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void RegisterButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             this.NavigationService.Navigate(new Uri("/RegisterPage.xaml", UriKind.Relative));
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void LoginButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             this.NavigationService.Navigate(new Uri("/LoginPage.xaml", UriKind.Relative));
         }
 
-        private void PickASightButton_Click(object sender, RoutedEventArgs e)
+        private void PickASightButton_Click(object sender, RoutedEventArgs eventArgs)
         {
             App.SelectedSight = null;
             this.NavigationService.Navigate(new Uri("/PickSightPage.xaml", UriKind.Relative));
